@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// المجلدات المطلوبة للموقع المتكامل
+// المجلدات المطلوب تأسيسها للموقع المتكامل
 const directories = [
   'config',
   'models',
@@ -53,7 +53,6 @@ files['package.json'] = `{
   }
 }`;
 
-// ملف الإعدادات البيئية .env
 files['.env'] = `PORT=5000
 MONGODB_URI=mongodb://127.0.0.1:27017/al_najjar_db`;
 
@@ -171,7 +170,7 @@ router.post('/custom-order', productController.createCustomOrder);
 
 module.exports = router;`;
 
-// واجهة مستخدم الويب الفاخرة لعملاء المعرض public/index.html
+// واجهة مستخدم الويب الفاخرة لعملاء المعرض مع كاشف الأخطاء التلقائي الذكي public/index.html
 files['public/index.html'] = [
   "<!DOCTYPE html>",
   "<html lang=\"ar\" dir=\"rtl\" class=\"scroll-smooth\">",
@@ -733,7 +732,7 @@ files['public/index.html'] = [
   "      document.getElementById('adminPasswordInput').value = '';",
   "    }",
   "",
-  "    // التحقق من اسم المستخدم وكلمة المرور من قاعدة البيانات",
+  "    // التحقق من اسم المستخدم وكلمة المرور من قاعدة البيانات (تم تعديل كاشف الخطأ التفصيلي السريع هنا)",
   "    async function verifyAdmin() {",
   "      const email = document.getElementById('adminEmailInput').value;",
   "      const password = document.getElementById('adminPasswordInput').value;",
@@ -754,7 +753,8 @@ files['public/index.html'] = [
   "          document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });",
   "          loadCustomOrders();",
   "        } else {",
-  "          alert('خطأ: ' + json.message);",
+  "          // كاشف الأخطاء التفصيلي لطباعة سبب المشكلة الحقيقي بدقة في المتصفح",
+  "          alert('خطأ: ' + (json.message || json.error || 'خطأ غير معروف في الاتصال.'));",
   "        }",
   "      } catch (err) {",
   "        alert('حدث خطأ أثناء محاولة تسجيل الدخول لمجتمع المعرض.');",
@@ -808,7 +808,7 @@ files['public/index.html'] = [
   "          document.getElementById('add-product-form').reset();",
   "          loadProducts(''); ",
   "        } else {",
-  "          alert('فشل حفظ المنتج: ' + resJson.message);",
+  "          alert('فشل حفظ المنتج: ' + (resJson.message || resJson.error));",
   "        }",
   "      } catch (err) {",
   "        alert('حدث خطأ في الاتصال بالخادم أثناء حفظ المنتج.');",
@@ -835,7 +835,7 @@ files['public/index.html'] = [
   "          ",
   "          tr.innerHTML = \`",
   "            <td class=\"p-3\"><strong>\${order.customerName}</strong><br><span class=\"text-xs text-gray-500\">\${order.customerPhone}</span></td>",
-  "            <td class=\"p-3\"><strong>\${order.title}</strong><br><span class=\"text-xs text-gray-400\">\text-xs text-gray-400\">\${order.details}</span></td>",
+  "            <td class=\"p-3\"><strong>\${order.title}</strong><br><span class=\"text-xs text-gray-400\">\${order.details}</span></td>",
   "            <td class=\"p-3 text-red-400\">\${order.costPrice} ج.م</td>",
   "            <td class=\"p-3 text-green-400 font-bold\">\${order.sellingPrice} ج.م</td>",
   "            <td class=\"p-3 text-blue-400\">\${order.amountPaid} ج.م</td>",
@@ -893,7 +893,7 @@ files['public/index.html'] = [
   "          closeOrderUpdateModal();",
   "          loadCustomOrders(); ",
   "        } else {",
-  "          alert('فشل التحديث: ' + json.message);",
+  "          alert('فشل التحديث: ' + (json.message || json.error));",
   "        }",
   "      } catch (err) {",
   "        alert('حدث خطأ أثناء تعديل بيانات المقايسة.');",
@@ -915,7 +915,7 @@ files['public/index.html'] = [
   "          closeOrderUpdateModal();",
   "          loadCustomOrders();",
   "        } else {",
-  "          alert('فشل حذف الطلب: ' + json.message);",
+  "          alert('فشل حذف الطلب: ' + (json.message || json.error));",
   "        }",
   "      } catch (err) {",
   "        alert('حدث خطأ أثناء معالجة الحذف.');",
@@ -944,7 +944,7 @@ files['public/index.html'] = [
   "          alert('تم تسجيل الموظف الجديد بنجاح وتفعيل حسابه المالي والإداري!');",
   "          document.getElementById('add-user-form').reset();",
   "        } else {",
-  "          alert('فشل تسجيل الحساب: ' + json.message);",
+  "          alert('فشل تسجيل الحساب: ' + (json.message || json.error));",
   "        }",
   "      } catch (err) {",
   "        alert('حدث خطأ في الشبكة أثناء تسجيل الحساب الجديد.');",
@@ -1033,7 +1033,7 @@ files['public/index.html'] = [
   "          closeManualOrderModal();",
   "          loadCustomOrders(); ",
   "        } else {",
-  "          alert('فشل إضافة الطلب: ' + resJson.message);",
+  "          alert('فشل إضافة الطلب: ' + (resJson.message || resJson.error));",
   "        }",
   "      } catch (err) {",
   "        alert('حدث خطأ في الاتصال بالخادم أثناء تسجيل الطلب اليدوي.');",
@@ -1046,7 +1046,7 @@ files['public/index.html'] = [
   "</html>"
 ].join('\n');
 
-// ملف الخادم الرئيسي server.js مع التصدير لـ Vercel وتجنب تعليق الاستماع للـ Serverless
+// ملف الخادم الرئيسي server.js
 files['server.js'] = [
   "const express = require('express');",
   "const dotenv = require('dotenv');",

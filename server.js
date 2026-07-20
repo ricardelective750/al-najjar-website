@@ -17,7 +17,8 @@ const app = express();
 app.use(express.json());
 
 // تشغيل وخدمة واجهة الويب الأمامية والمرفوعات مباشرة
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
+
 // إعداد خزان رفع الصور والفيديوهات من الجهاز المحلي (Multer)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
