@@ -835,7 +835,7 @@ files['public/index.html'] = [
   "          ",
   "          tr.innerHTML = \`",
   "            <td class=\"p-3\"><strong>\${order.customerName}</strong><br><span class=\"text-xs text-gray-500\">\${order.customerPhone}</span></td>",
-  "            <td class=\"p-3\"><strong>\${order.title}</strong><br><span class=\"text-xs text-gray-400\">\${order.details}</span></td>",
+  "            <td class=\"p-3\"><strong>\${order.title}</strong><br><span class=\"text-xs text-gray-400\">\text-xs text-gray-400\">\${order.details}</span></td>",
   "            <td class=\"p-3 text-red-400\">\${order.costPrice} ج.م</td>",
   "            <td class=\"p-3 text-green-400 font-bold\">\${order.sellingPrice} ج.م</td>",
   "            <td class=\"p-3 text-blue-400\">\${order.amountPaid} ج.م</td>",
@@ -1046,7 +1046,7 @@ files['public/index.html'] = [
   "</html>"
 ].join('\n');
 
-// ملف الخادم الرئيسي server.js مع التصدير لـ Vercel
+// ملف الخادم الرئيسي server.js مع التصدير لـ Vercel وتجنب تعليق الاستماع للـ Serverless
 files['server.js'] = [
   "const express = require('express');",
   "const dotenv = require('dotenv');",
@@ -1173,7 +1173,6 @@ files['server.js'] = [
   "      });",
   "      console.log('[Auto-Seeder] تم إنشاء حساب المدير الرئيسي الافتراضي بنجاح!');",
   "    } else {",
-  "      // إعادة تعيين كلمة المرور الافتراضية لضمان الدخول في حال تداخل البيانات القديمة",
   "      adminUser.password = 'admin_najjar_123';",
   "      await adminUser.save();",
   "      console.log('[Auto-Seeder] تم التحقق من حساب المدير وإعادة تعيين الباسوورد الافتراضي بنجاح!');",
@@ -1234,13 +1233,15 @@ files['server.js'] = [
   "",
   "seedSampleProducts();",
   "",
-  "const PORT = process.env.PORT || 5000;",
-  "const server = app.listen(PORT, () => {",
-  "  console.log('--------------------------------------------------');",
-  "  console.log('Server is running on port: ' + PORT);",
-  "  console.log('Visit: http://localhost:5000 in your browser!');",
-  "  console.log('--------------------------------------------------');",
-  "});",
+  "// تشغيل الاستماع محلياً فقط وتفادي تشغيله على Vercel لمنع الـ Crash",
+  "if (!process.env.VERCEL) {",
+  "  const PORT = process.env.PORT || 5000;",
+  "  app.listen(PORT, () => {",
+  "    console.log('--------------------------------------------------');",
+  "    console.log('Server is running locally on port: ' + PORT);",
+  "    console.log('--------------------------------------------------');",
+  "  });",
+  "}",
   "",
   "// تصدير الخادم السحابي لمنصة Vercel لمنع أخطاء البناء",
   "module.exports = app;"

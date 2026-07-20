@@ -123,7 +123,6 @@ const seedSampleProducts = async () => {
       });
       console.log('[Auto-Seeder] تم إنشاء حساب المدير الرئيسي الافتراضي بنجاح!');
     } else {
-      // إعادة تعيين كلمة المرور الافتراضية لضمان الدخول في حال تداخل البيانات القديمة
       adminUser.password = 'admin_najjar_123';
       await adminUser.save();
       console.log('[Auto-Seeder] تم التحقق من حساب المدير وإعادة تعيين الباسوورد الافتراضي بنجاح!');
@@ -184,13 +183,15 @@ const seedSampleProducts = async () => {
 
 seedSampleProducts();
 
-const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-  console.log('--------------------------------------------------');
-  console.log('Server is running on port: ' + PORT);
-  console.log('Visit: http://localhost:5000 in your browser!');
-  console.log('--------------------------------------------------');
-});
+// تشغيل الاستماع محلياً فقط وتفادي تشغيله على Vercel لمنع الـ Crash
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log('--------------------------------------------------');
+    console.log('Server is running locally on port: ' + PORT);
+    console.log('--------------------------------------------------');
+  });
+}
 
 // تصدير الخادم السحابي لمنصة Vercel لمنع أخطاء البناء
 module.exports = app;
