@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+// المجلدات المطلوبة للموقع المتكامل
 const directories = [
   'config',
   'models',
@@ -12,7 +13,7 @@ const directories = [
 
 const files = {};
 
-// ملف التكوين السحابي الخاص بـ Vercel - آمن ومعزول
+// 1. ملف التكوين السحابي الحاسم لمنصة Vercel
 files['vercel.json'] = [
   "{",
   "  \"version\": 2,",
@@ -31,7 +32,7 @@ files['vercel.json'] = [
   "}"
 ].join('\n');
 
-// ملف package.json
+// ملف package.json لإدارة المكتبات
 files['package.json'] = `{
   "name": "al-najjar-showroom",
   "version": "1.0.0",
@@ -52,10 +53,13 @@ files['package.json'] = `{
   }
 }`;
 
+// ملف الإعدادات البيئية .env
 files['.env'] = `PORT=5000
 MONGODB_URI=mongodb://127.0.0.1:27017/al_najjar_db`;
 
+// ملف الاتصال بقاعدة البيانات config/db.js
 files['config/db.js'] = `const mongoose = require('mongoose');
+
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI);
@@ -64,9 +68,12 @@ const connectDB = async () => {
     console.error("Database connection failed: " + error.message);
   }
 };
+
 module.exports = connectDB;`;
 
+// نموذج المستخدم models/User.js
 files['models/User.js'] = `const mongoose = require('mongoose');
+
 const userSchema = new mongoose.Schema({
   name: { type: String, required: [true, 'يرجى إدخال الاسم بالكامل'], trim: true },
   email: { type: String, required: [true, 'يرجى إدخال البريد الإلكتروني'], unique: true, lowercase: true, trim: true },
@@ -74,9 +81,12 @@ const userSchema = new mongoose.Schema({
   phone: { type: String, required: [true, 'يرجى إدخال رقم الهاتف للتواصل'] },
   role: { type: String, enum: ['customer', 'admin', 'employee'], default: 'customer' }
 }, { timestamps: true });
+
 module.exports = mongoose.model('User', userSchema);`;
 
+// نموذج المنتج models/Product.js
 files['models/Product.js'] = `const mongoose = require('mongoose');
+
 const productSchema = new mongoose.Schema({
   title: { type: String, required: [true, 'اسم المنتج مطلوب باللغة العربية'], trim: true },
   description: { type: String, required: [true, 'وصف المنتج مطلوب باللغة العربية'] },
@@ -89,9 +99,12 @@ const productSchema = new mongoose.Schema({
   isAvailable: { type: Boolean, default: true },
   stock: { type: Number, default: 1 }
 }, { timestamps: true });
+
 module.exports = mongoose.model('Product', productSchema);`;
 
+// نموذج طلبات التصنيع والعمولة models/CustomOrder.js
 files['models/CustomOrder.js'] = `const mongoose = require('mongoose');
+
 const customOrderSchema = new mongoose.Schema({
   customerName: { type: String, required: [true, 'يرجى إدخال اسم العميل'] },
   customerPhone: { type: String, required: [true, 'يرجى إدخال رقم الهاتف'] },
@@ -99,26 +112,32 @@ const customOrderSchema = new mongoose.Schema({
   details: { type: String, required: [true, 'يرجى كتابة تفاصيل ومقاسات طلبك'] },
   woodTypeRequested: { type: String, required: [true, 'يرجى تحديد نوع الخشب'] },
   estimatedBudget: { type: Number, default: 0 },
+  
   costPrice: { type: Number, default: 0 },         
   sellingPrice: { type: Number, default: 0 },      
   amountPaid: { type: Number, default: 0 },        
   deliveryDate: { type: String, default: '' },     
   completionPercentage: { type: Number, default: 0 }, 
+  
   status: { type: String, default: 'قيد المراجعة' }
 }, { timestamps: true });
+
 module.exports = mongoose.model('CustomOrder', customOrderSchema);`;
 
+// وحدة التحكم والعمليات controllers/productController.js
 files['controllers/productController.js'] = `const Product = require('../models/Product');
 const CustomOrder = require('../models/CustomOrder');
+
 exports.createProduct = async (req, res) => {
   try {
     const newProduct = new Product(req.body);
     const savedProduct = await newProduct.save();
-    return res.status(201).json({ success: true, message: 'تم إضافة المنتج بنجاح', data: savedProduct });
+    return res.status(201).json({ success: true, message: 'تم إضافة المنتج بنجاح إلى المعرض وتحديث القائمة', data: savedProduct });
   } catch (error) {
     return res.status(400).json({ success: false, message: error.message });
   }
 };
+
 exports.getProducts = async (req, res) => {
   try {
     const { category } = req.query;
@@ -130,6 +149,7 @@ exports.getProducts = async (req, res) => {
     return res.status(500).json({ success: false, error: error.message });
   }
 };
+
 exports.createCustomOrder = async (req, res) => {
   try {
     const newOrder = new CustomOrder(req.body);
@@ -140,15 +160,18 @@ exports.createCustomOrder = async (req, res) => {
   }
 };`;
 
+// مسارات الروابط routes/productRoutes.js
 files['routes/productRoutes.js'] = `const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
+
 router.post('/', productController.createProduct);
 router.get('/', productController.getProducts);
 router.post('/custom-order', productController.createCustomOrder);
+
 module.exports = router;`;
 
-// ملف واجهة المستخدم المحدث بالكامل مع الأيقونات والخطوط والألوان المتناسقة
+// واجهة مستخدم الويب الفاخرة لعملاء المعرض public/index.html
 files['public/index.html'] = [
   "<!DOCTYPE html>",
   "<html lang=\"ar\" dir=\"rtl\" class=\"scroll-smooth\">",
@@ -170,34 +193,56 @@ files['public/index.html'] = [
   "      }",
   "    }",
   "  </script>",
+  "  <!-- تضمين خط Tajawal الفاخر والأوضح هندسياً -->",
   "  <link href=\"https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap\" rel=\"stylesheet\">",
   "  <style>",
   "    body { font-family: 'Tajawal', sans-serif; background-color: #FAF9F6; -webkit-font-smoothing: antialiased; }",
+  "    ",
+  "    /* تأثير اللوجو المجسم الفاخر ثلاثي الأبعاد */",
   "    .text-3d-gold {",
-  "      font-size: 1.8rem; font-weight: 800;",
+  "      font-size: 1.8rem;",
+  "      font-weight: 800;",
   "      background: linear-gradient(135deg, #FFF 0%, #D4AF37 50%, #8A6F27 100%);",
-  "      -webkit-background-clip: text; -webkit-text-fill-color: transparent;",
+  "      -webkit-background-clip: text;",
+  "      -webkit-text-fill-color: transparent;",
   "      filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 0.4));",
-  "      text-shadow: 1px 1px 0px #8A6F27, 2px 2px 0px #70581E, 3px 3px 0px #574617, 4px 4px 6px rgba(0,0,0,0.8);",
+  "      text-shadow: ",
+  "        1px 1px 0px #8A6F27,",
+  "        2px 2px 0px #70581E,",
+  "        3px 3px 0px #574617,",
+  "        4px 4px 6px rgba(0,0,0,0.8);",
   "    }",
-  "    @media (min-width: 768px) { .text-3d-gold { font-size: 2.8rem; } }",
+  "    @media (min-width: 768px) {",
+  "      .text-3d-gold { font-size: 2.8rem; }",
+  "    }",
   "  </style>",
   "</head>",
   "<body class=\"text-gray-800\">",
+  "",
+  "  <!-- شريط الإعلانات العلوي المقسم مع أيقونات التواصل الاجتماعي الفخمة -->",
   "  <div class=\"bg-luxuryGold text-black py-2.5 px-4 shadow-md border-b border-yellow-600/30\">",
   "    <div class=\"container mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-center\">",
-  "      <div class=\"text-sm font-bold tracking-wide\">✨ عرض خاص وحصري: خصم 25% وتوصيل مجاني لجميع الطلبات والمراكز بقنا لفترة محدودة! ✨</div>",
+  "      <div class=\"text-sm font-bold tracking-wide\">",
+  "        ✨ عرض خاص وحصري: خصم 25% وتوصيل مجاني لجميع الطلبات والمراكز بقنا لفترة محدودة! ✨",
+  "      </div>",
+  "      <!-- أيقونات التواصل المذهبة الفاخرة المدمجة للتشغيل المباشر -->",
   "      <div class=\"flex items-center gap-3\">",
   "        <span class=\"text-xs font-semibold text-black/70 ml-1\">تواصل مباشر:</span>",
-  "        <a href=\"https://www.facebook.com/bdallhalnjar.469115?locale=ar_AR\" target=\"_blank\" class=\"bg-black/10 hover:bg-black/20 p-1.5 rounded-full transition-all duration-300 hover:scale-110\">",
-  "          <svg class=\"w-4 h-4 text-black\" fill=\"currentColor\" viewBox=\"0 0 24 24\"><path d=\"M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z\"/></svg>",
+  "        <a href=\"https://www.facebook.com/bdallhalnjar.469115?locale=ar_AR\" target=\"_blank\" class=\"bg-black/10 hover:bg-black/20 p-1.5 rounded-full transition-all duration-300 hover:scale-110\" title=\"فيسبوك المعرض\">",
+  "          <svg class=\"w-4 h-4 text-black\" fill=\"currentColor\" viewBox=\"0 0 24 24\">",
+  "            <path d=\"M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z\"/>",
+  "          </svg>",
   "        </a>",
-  "        <a href=\"https://wa.me/201060344580\" target=\"_blank\" class=\"bg-black/10 hover:bg-black/20 p-1.5 rounded-full transition-all duration-300 hover:scale-110\">",
-  "          <svg class=\"w-4 h-4 text-black\" fill=\"currentColor\" viewBox=\"0 0 24 24\"><path d=\"M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.05-.149-.669-1.612-.916-2.207-.242-.596-.487-.514-.67-.515-.173-.002-.371-.002-.57-.002-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.135-1.61a11.75 11.75 0 005.908 1.597h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413\"/></svg>",
+  "        <a href=\"https://wa.me/201060344580\" target=\"_blank\" class=\"bg-black/10 hover:bg-black/20 p-1.5 rounded-full transition-all duration-300 hover:scale-110\" title=\"واتساب المعرض\">",
+  "          <svg class=\"w-4 h-4 text-black\" fill=\"currentColor\" viewBox=\"0 0 24 24\">",
+  "            <path d=\"M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.05-.149-.669-1.612-.916-2.207-.242-.596-.487-.514-.67-.515-.173-.002-.371-.002-.57-.002-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.135-1.61a11.75 11.75 0 005.908 1.597h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413\"/>",
+  "          </svg>",
   "        </a>",
   "      </div>",
   "    </div>",
   "  </div>",
+  "",
+  "  <!-- هيدر الموقع الفاخر مع اللوجو المجسم الكبير -->",
   "  <header class=\"bg-luxuryDark text-white sticky top-0 z-50 border-b border-yellow-600/20 shadow-lg\">",
   "    <div class=\"container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4\">",
   "      <div class=\"text-center md:text-right\">",
@@ -212,6 +257,8 @@ files['public/index.html'] = [
   "      </nav>",
   "    </div>",
   "  </header>",
+  "",
+  "  <!-- نافذة تسجيل دخول المدير والموظفين -->",
   "  <div id=\"admin-login-modal\" class=\"fixed inset-0 bg-black/80 z-50 hidden flex justify-center items-center p-4\">",
   "    <div class=\"bg-[#1C1C1C] text-white p-8 rounded-lg max-w-md w-full border border-luxuryGold/30 relative\">",
   "      <button onclick=\"closeAdminLogin()\" class=\"absolute top-4 left-4 text-gray-400 hover:text-white text-xl\">&times;</button>",
@@ -229,6 +276,8 @@ files['public/index.html'] = [
   "      </div>",
   "    </div>",
   "  </div>",
+  "",
+  "  <!-- لوحة تحكم الإدارة الكاملة المحدثة (Admin Control Center) -->",
   "  <section id=\"admin-panel\" class=\"bg-luxuryGold/5 border-b border-luxuryGold/20 py-8 px-4 hidden\">",
   "    <div class=\"container mx-auto max-w-6xl bg-[#121212] text-white p-8 rounded-lg border border-luxuryGold/20 space-y-12\">",
   "      <div class=\"flex justify-between items-center border-b border-white/10 pb-4\">",
@@ -238,11 +287,15 @@ files['public/index.html'] = [
   "        </div>",
   "        <button onclick=\"logoutAdmin()\" class=\"bg-red-600/20 text-red-500 border border-red-600/40 px-4 py-1 rounded text-xs hover:bg-red-600 hover:text-white transition-all duration-300\">إغلاق اللوحة</button>",
   "      </div>",
+  "",
+  "      <!-- التبويبات الداخلية للوحة التحكم -->",
   "      <div class=\"flex border-b border-white/10 gap-4 pb-3 text-sm\">",
   "        <button onclick=\"switchAdminTab('tab-product')\" class=\"text-luxuryGold font-bold px-4 py-1 border-b-2 border-luxuryGold\" id=\"btn-tab-product\">إضافة منتجات وصور</button>",
   "        <button onclick=\"switchAdminTab('tab-orders')\" class=\"text-gray-400 px-4 py-1 hover:text-white\" id=\"btn-tab-orders\">متابعة حسابات العمولة والورشة</button>",
   "        <button onclick=\"switchAdminTab('tab-users')\" class=\"text-gray-400 px-4 py-1 hover:text-white\" id=\"btn-tab-users\">إضافة حسابات وصلاحيات</button>",
   "      </div>",
+  "",
+  "      <!-- تبويب 1: إضافة منتج مع رفع صور ومقاطع فيديو محلية -->",
   "      <div id=\"tab-product\" class=\"space-y-6\">",
   "        <h5 class=\"text-lg font-bold text-gray-200\">نشر قطعة أثاث جديدة في المعرض</h5>",
   "        <form id=\"add-product-form\" onsubmit=\"addNewProduct(event)\" class=\"space-y-4 text-right\">",
@@ -376,11 +429,11 @@ files['public/index.html'] = [
   "          <form id=\"manual-order-form\" onsubmit=\"submitManualOrder(event)\" class=\"space-y-4 text-right\">",
   "            <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\">",
   "              <div>",
-  "                <label class=\"block text-xs text-gray-400 mb-2\">اسم العميل</label>",
+  "                <label class=\"block text-sm font-medium mb-2 text-gray-300\">اسم العميل</label>",
   "                <input type=\"text\" id=\"mCustName\" required class=\"w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold\">",
   "              </div>",
   "              <div>",
-  "                <label class=\"block text-xs text-gray-400 mb-2\">رقم هاتف العميل</label>",
+  "                <label class=\"block text-sm font-medium mb-2 text-gray-300\">رقم هاتف العميل</label>",
   "                <input type=\"tel\" id=\"mCustPhone\" required class=\"w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold\">",
   "              </div>",
   "            </div>",
@@ -762,4 +815,524 @@ files['public/index.html'] = [
   "      }",
   "    }",
   "",
-  "    // جلب طلبات العمولة والتصنيع الخاص في لوحة الإد
+  "    // جلب طلبات العمولة والتصنيع الخاص في لوحة الإدارة",
+  "    async function loadCustomOrders() {",
+  "      try {",
+  "        const response = await fetch('/api/custom-orders');",
+  "        const json = await response.json();",
+  "        const tbody = document.getElementById('orders-table-body');",
+  "        tbody.innerHTML = '';",
+  "        ",
+  "        if (!json.success || json.data.length === 0) {",
+  "          tbody.innerHTML = '<tr><td colspan=\"9\" class=\"text-center p-4 text-gray-500\">لا توجد طلبات عمولة مسجلة بعد.</td></tr>';",
+  "          return;",
+  "        }",
+  "        ",
+  "        json.data.forEach(order => {",
+  "          const remaining = order.sellingPrice - order.amountPaid;",
+  "          const tr = document.createElement('tr');",
+  "          tr.className = 'border-b border-white/5 hover:bg-white/5 text-right';",
+  "          ",
+  "          tr.innerHTML = \`",
+  "            <td class=\"p-3\"><strong>\${order.customerName}</strong><br><span class=\"text-xs text-gray-500\">\${order.customerPhone}</span></td>",
+  "            <td class=\"p-3\"><strong>\${order.title}</strong><br><span class=\"text-xs text-gray-400\">\${order.details}</span></td>",
+  "            <td class=\"p-3 text-red-400\">\${order.costPrice} ج.م</td>",
+  "            <td class=\"p-3 text-green-400 font-bold\">\${order.sellingPrice} ج.م</td>",
+  "            <td class=\"p-3 text-blue-400\">\${order.amountPaid} ج.م</td>",
+  "            <td class=\"p-3 text-yellow-500 font-bold\">\${remaining} ج.م</td>",
+  "            <td class=\"p-3 text-gray-300\">\${order.deliveryDate || 'غير محدد'}</td>",
+  "            <td class=\"p-3\">",
+  "              <div class=\"w-full bg-gray-700 rounded-full h-2\">",
+  "                <div class=\"bg-luxuryGold h-2 rounded-full\" style=\"width: \${order.completionPercentage}%\"></div>",
+  "              </div>",
+  "              <span class=\"text-xs text-luxuryGold font-bold\">\${order.completionPercentage}%</span>",
+  "            </td>",
+  "            <td class=\"p-3\">",
+  "              <button onclick=\"openOrderUpdateModal('\${order._id}', \${order.costPrice}, \${order.sellingPrice}, \${order.amountPaid}, '\${order.deliveryDate}', \${order.completionPercentage})\" class=\"bg-luxuryGold text-black px-3 py-1 rounded text-xs font-bold hover:bg-yellow-500 transition-all duration-300\">إدارة الحساب</button>",
+  "            </td>",
+  "          \`;",
+  "          tbody.appendChild(tr);",
+  "        });",
+  "      } catch (err) {",
+  "        console.error('فشل جلب طلبات العمولة:', err);",
+  "      }",
+  "    }",
+  "",
+  "    // نافذة تحديث الطلبات مالياً وزمنياً",
+  "    function openOrderUpdateModal(id, cost, selling, paid, date, completion) {",
+  "      document.getElementById('updateOrderId').value = id;",
+  "      document.getElementById('updateCost').value = cost;",
+  "      document.getElementById('updateSelling').value = selling;",
+  "      document.getElementById('updatePaid').value = paid;",
+  "      document.getElementById('updateDelivery').value = date;",
+  "      document.getElementById('updateCompletion').value = completion;",
+  "      document.getElementById('order-update-modal').classList.remove('hidden');",
+  "    }",
+  "    function closeOrderUpdateModal() {",
+  "      document.getElementById('order-update-modal').classList.add('hidden');",
+  "    }",
+  "    async function saveOrderUpdate() {",
+  "      const id = document.getElementById('updateOrderId').value;",
+  "      const payload = {",
+  "        costPrice: Number(document.getElementById('updateCost').value),",
+  "        sellingPrice: Number(document.getElementById('updateSelling').value),",
+  "        amountPaid: Number(document.getElementById('updatePaid').value),",
+  "        deliveryDate: document.getElementById('updateDelivery').value,",
+  "        completionPercentage: Number(document.getElementById('updateCompletion').value)",
+  "      };",
+  "      ",
+  "      try {",
+  "        const response = await fetch('/api/custom-orders/' + id, {",
+  "          method: 'PUT',",
+  "          headers: { 'Content-Type': 'application/json' },",
+  "          body: JSON.stringify(payload)",
+  "        });",
+  "        const json = await response.json();",
+  "        if (json.success) {",
+  "          alert('تم تحديث بيانات المقايسة المالية ونسبة الإنجاز بنجاح!');",
+  "          closeOrderUpdateModal();",
+  "          loadCustomOrders(); ",
+  "        } else {",
+  "          alert('فشل التحديث: ' + json.message);",
+  "        }",
+  "      } catch (err) {",
+  "        alert('حدث خطأ أثناء تعديل بيانات المقايسة.');",
+  "      }",
+  "    }",
+  "",
+  "    // حذف طلب العمولة نهائياً",
+  "    async function deleteOrder() {",
+  "      const id = document.getElementById('updateOrderId').value;",
+  "      if (!confirm('هل أنت متأكد تماماً من حذف وإلغاء طلب العمولة هذا نهائياً من النظام؟ لا يمكن التراجع عن هذا الإجراء.')) return;",
+  "      ",
+  "      try {",
+  "        const response = await fetch('/api/custom-orders/' + id, {",
+  "          method: 'DELETE'",
+  "        });",
+  "        const json = await response.json();",
+  "        if (json.success) {",
+  "          alert('تم حذف وإلغاء طلب العمولة بنجاح من قاعدة البيانات.');",
+  "          closeOrderUpdateModal();",
+  "          loadCustomOrders();",
+  "        } else {",
+  "          alert('فشل حذف الطلب: ' + json.message);",
+  "        }",
+  "      } catch (err) {",
+  "        alert('حدث خطأ أثناء معالجة الحذف.');",
+  "      }",
+  "    }",
+  "",
+  "    // إضافة موظف أو مسؤول حسابات جديد",
+  "    async function addNewUser(event) {",
+  "      event.preventDefault();",
+  "      const payload = {",
+  "        name: document.getElementById('userFullName').value,",
+  "        email: document.getElementById('userEmail').value,",
+  "        password: document.getElementById('userPass').value,",
+  "        phone: document.getElementById('userPhone').value,",
+  "        role: document.getElementById('userRole').value",
+  "      };",
+  "      ",
+  "      try {",
+  "        const response = await fetch('/api/users', {",
+  "          method: 'POST',",
+  "          headers: { 'Content-Type': 'application/json' },",
+  "          body: JSON.stringify(payload)",
+  "        });",
+  "        const json = await response.json();",
+  "        if (json.success) {",
+  "          alert('تم تسجيل الموظف الجديد بنجاح وتفعيل حسابه المالي والإداري!');",
+  "          document.getElementById('add-user-form').reset();",
+  "        } else {",
+  "          alert('فشل تسجيل الحساب: ' + json.message);",
+  "        }",
+  "      } catch (err) {",
+  "        alert('حدث خطأ في الشبكة أثناء تسجيل الحساب الجديد.');",
+  "      }",
+  "    }",
+  "",
+  "    // وظيفة تصدير الداتا إلى شيت إكسيل (CSV مرمز للعربية UTF-8 BOM)",
+  "    async function exportToExcel() {",
+  "      try {",
+  "        const response = await fetch('/api/custom-orders');",
+  "        const json = await response.json();",
+  "        ",
+  "        if (!json.success || json.data.length === 0) {",
+  "          alert('لا توجد طلبات عمولة لتصديرها حالياً.');",
+  "          return;",
+  "        }",
+  "        ",
+  "        let csvContent = '\\ufeff';",
+  "        csvContent += 'اسم العميل,رقم الهاتف,نوع الأثاث المطلوبة,التفاصيل والمقاسات,نوع الخشب,سعر التكلفة (جملة),سعر البيع النهائي,المبلغ المدفوع,المبلغ المتبقي,تاريخ التسليم,نسبة الإنجاز,حالة الطلب\\n';",
+  "        ",
+  "        json.data.forEach(function(order) {",
+  "          const remaining = order.sellingPrice - order.amountPaid;",
+  "          const row = [",
+  "            '\"' + order.customerName + '\"',",
+  "            '\"' + order.customerPhone + '\"',",
+  "            '\"' + order.title + '\"',",
+  "            '\"' + order.details.replace(/\\\\r?\\\\n|\\\\r/g, ' ') + '\"',",
+  "            '\"' + order.woodTypeRequested + '\"',",
+  "            order.costPrice,",
+  "            order.sellingPrice,",
+  "            order.amountPaid,",
+  "            remaining,",
+  "            '\"' + (order.deliveryDate || 'غير محدد') + '\"',",
+  "            '\"' + order.completionPercentage + '%\"',",
+  "            '\"' + order.status + '\"'",
+  "          ].join(',');",
+  "          csvContent += row + '\\n';",
+  "        });",
+  "        ",
+  "        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });",
+  "        const url = URL.createObjectURL(blob);",
+  "        const link = document.createElement('a');",
+  "        link.setAttribute('href', url);",
+  "        link.setAttribute('download', 'تقرير_شغل_العمولة_معرض_النجار_' + new Date().toISOString().slice(0, 10) + '.csv');",
+  "        document.body.appendChild(link);",
+  "        link.click();",
+  "        document.body.removeChild(link);",
+  "      } catch (err) {",
+  "        alert('حدث خطأ أثناء تصدير شيت الإكسيل: ' + err.message);",
+  "      }",
+  "    }",
+  "",
+  "    // فتح وإغلاق نافذة إضافة طلب عمولة يدوي",
+  "    function openManualOrderModal() {",
+  "      document.getElementById('manual-order-modal').classList.remove('hidden');",
+  "    }",
+  "    function closeManualOrderModal() {",
+  "      document.getElementById('manual-order-modal').classList.add('hidden');",
+  "      document.getElementById('manual-order-form').reset();",
+  "    }",
+  "    async function submitManualOrder(event) {",
+  "      event.preventDefault();",
+  "      ",
+  "      const payload = {",
+  "        customerName: document.getElementById('mCustName').value,",
+  "        customerPhone: document.getElementById('mCustPhone').value,",
+  "        title: document.getElementById('mTitle').value,",
+  "        woodTypeRequested: document.getElementById('mWood').value,",
+  "        deliveryDate: document.getElementById('mDelivery').value,",
+  "        details: document.getElementById('mDetails').value,",
+  "        costPrice: Number(document.getElementById('mCostPrice').value),",
+  "        sellingPrice: Number(document.getElementById('mSellingPrice').value),",
+  "        amountPaid: Number(document.getElementById('mAmountPaid').value)",
+  "      };",
+  "      ",
+  "      try {",
+  "        const response = await fetch('/api/products/custom-order', {",
+  "          method: 'POST',",
+  "          headers: { 'Content-Type': 'application/json' },",
+  "          body: JSON.stringify(payload)",
+  "        });",
+  "        ",
+  "        const resJson = await response.json();",
+  "        if (resJson.success) {",
+  "          alert('تم إضافة طلب العمولة اليدوي بنجاح وإدراجه في قائمة حسابات الورشة!');",
+  "          closeManualOrderModal();",
+  "          loadCustomOrders(); ",
+  "        } else {",
+  "          alert('فشل إضافة الطلب: ' + resJson.message);",
+  "        }",
+  "      } catch (err) {",
+  "        alert('حدث خطأ في الاتصال بالخادم أثناء تسجيل الطلب اليدوي.');",
+  "      }",
+  "    }",
+  "",
+  "    window.onload = () => loadProducts('');",
+  "  </script>",
+  "</body>",
+  "</html>"
+].join('\n');
+
+// ملف الخادم الرئيسي server.js مع التصدير لـ Vercel
+files['server.js'] = [
+  "const express = require('express');",
+  "const dotenv = require('dotenv');",
+  "const multer = require('multer');",
+  "const path = require('path');",
+  "const fs = require('fs');",
+  "const connectDB = require('./config/db');",
+  "const productRoutes = require('./routes/productRoutes');",
+  "const Product = require('./models/Product');",
+  "const CustomOrder = require('./models/CustomOrder');",
+  "const User = require('./models/User');",
+  "",
+  "dotenv.config();",
+  "",
+  "connectDB();",
+  "",
+  "const app = express();",
+  "app.use(express.json());",
+  "",
+  "// تشغيل وخدمة واجهة الويب الأمامية والمرفوعات مباشرة",
+  "app.use(express.static('public'));",
+  "",
+  "// إعداد خزان رفع الصور والفيديوهات من الجهاز المحلي (Multer)",
+  "const storage = multer.diskStorage({",
+  "  destination: (req, file, cb) => {",
+  "    cb(null, 'public/uploads/');",
+  "  },",
+  "  filename: (req, file, cb) => {",
+  "    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);",
+  "    cb(null, uniqueSuffix + path.extname(file.originalname));",
+  "  }",
+  "});",
+  "const upload = multer({ storage: storage });",
+  "",
+  "// نقطة رفع الملفات المحلية من جهاز المدير",
+  "app.post('/api/upload', upload.single('file'), (req, res) => {",
+  "  if (!req.file) {",
+  "    return res.status(400).json({ success: false, message: 'لم يتم اختيار أي ملف.' });",
+  "  }",
+  "  return res.json({ success: true, url: '/uploads/' + req.file.filename });",
+  "});",
+  "",
+  "// تسجيل الدخول للمدراء والموظفين ومطابقة كلمة المرور",
+  "app.post('/api/users/login', async (req, res) => {",
+  "  const { email, password } = req.body;",
+  "  try {",
+  "    const user = await User.findOne({ email, password });",
+  "    if (!user) {",
+  "      return res.status(401).json({ success: false, message: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.' });",
+  "    }",
+  "    return res.json({",
+  "      success: true,",
+  "      message: 'مرحباً بك مجدداً ' + user.name,",
+  "      user: { name: user.name, role: user.role }",
+  "    });",
+  "  } catch (error) {",
+  "    return res.status(500).json({ success: false, error: error.message });",
+  "  }",
+  "});",
+  "",
+  "// جلب كافة طلبات العمولة والورشة للإدارة",
+  "app.get('/api/custom-orders', async (req, res) => {",
+  "  try {",
+  "    const orders = await CustomOrder.find().sort({ createdAt: -1 });",
+  "    return res.status(200).json({ success: true, data: orders });",
+  "  } catch (error) {",
+  "    return res.status(500).json({ success: false, error: error.message });",
+  "  }",
+  "});",
+  "",
+  "// تحديث تفاصيل طلب العمولة (المالية، نسبة الإنجاز والمواعيد)",
+  "app.put('/api/custom-orders/:id', async (req, res) => {",
+  "  try {",
+  "    const updatedOrder = await CustomOrder.findByIdAndUpdate(",
+  "      req.params.id,",
+  "      req.body,",
+  "      { new: true, runValidators: true }",
+  "    );",
+  "    return res.status(200).json({ success: true, data: updatedOrder });",
+  "  } catch (error) {",
+  "    return res.status(400).json({ success: false, message: error.message });",
+  "  }",
+  "});",
+  "",
+  "// حذف وإلغاء طلب عمولة نهائياً من الإدارة",
+  "app.delete('/api/custom-orders/:id', async (req, res) => {",
+  "  try {",
+  "    const deletedOrder = await CustomOrder.findByIdAndDelete(req.params.id);",
+  "    if (!deletedOrder) {",
+  "      return res.status(404).json({ success: false, message: 'طلب العمولة غير موجود في النظام.' });",
+  "    }",
+  "    return res.status(200).json({ success: true, message: 'تم حذف طلب العمولة بنجاح.' });",
+  "  } catch (error) {",
+  "    return res.status(500).json({ success: false, error: error.message });",
+  "  }",
+  "});",
+  "",
+  "// إضافة حسابات موظفين ومدراء جدد في النظام",
+  "app.post('/api/users', async (req, res) => {",
+  "  try {",
+  "    const newUser = new User(req.body);",
+  "    const savedUser = await newUser.save();",
+  "    return res.status(201).json({ success: true, message: 'تم تفعيل الحساب بنجاح', data: savedUser });",
+  "  } catch (error) {",
+  "    return res.status(400).json({ success: false, message: error.message });",
+  "  }",
+  "});",
+  "",
+  "app.use('/api/products', productRoutes);",
+  "",
+  "// تغذية قاعدة البيانات تلقائياً بأرقى المنتجات والمدير الرئيسي الافتراضي",
+  "const seedSampleProducts = async () => {",
+  "  try {",
+  "    // 1. تغذية أو تحديث حساب المدير الرئيسي الافتراضي",
+  "    const adminEmail = 'admin@najjar.com';",
+  "    const adminUser = await User.findOne({ email: adminEmail });",
+  "    if (!adminUser) {",
+  "      await User.create({",
+  "        name: 'المدير العام',",
+  "        email: adminEmail,",
+  "        password: 'admin_najjar_123',",
+  "        phone: '01060344580',",
+  "        role: 'admin'",
+  "      });",
+  "      console.log('[Auto-Seeder] تم إنشاء حساب المدير الرئيسي الافتراضي بنجاح!');",
+  "    } else {",
+  "      // إعادة تعيين كلمة المرور الافتراضية لضمان الدخول في حال تداخل البيانات القديمة",
+  "      adminUser.password = 'admin_najjar_123';",
+  "      await adminUser.save();",
+  "      console.log('[Auto-Seeder] تم التحقق من حساب المدير وإعادة تعيين الباسوورد الافتراضي بنجاح!');",
+  "    }",
+  "",
+  "    // 2. تغذية المنتجات الافتراضية",
+  "    const count = await Product.countDocuments();",
+  "    if (count === 0) {",
+  "      const sampleData = [",
+  "        {",
+  "          title: 'غرفة نوم الملكة الفاخرة',",
+  "          description: 'غرفة نوم كاملة مودرن بتفاصيل مذهبة وألوان متناسقة تناسب ذوقك الرفيع، مصنوعة بالكامل من الخشب الطبيعي المجفف.',",
+  "          price: 45000,",
+  "          discountPrice: 33750,",
+  "          category: 'غرف نوم',",
+  "          woodType: 'خشب زان أحمر فرنسي',",
+  "          dimensions: 'سرير 180سم - دولاب 280سم',",
+  "          images: ['https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=600']",
+  "        },",
+  "        {",
+  "          title: 'غرفة نوم الأطفال ميكي السحرية',",
+  "          description: 'غرفة نوم أطفال مبهجة بتصميم عصري ملون، تشمل سريرين ودولاب مدمج بتفاصيل محببة ومقاومة لحركة الأطفال.',",
+  "          price: 22000,",
+  "          discountPrice: 16500,",
+  "          category: 'غرف أطفال',",
+  "          woodType: 'خشب سويدي متين كبس',",
+  "          dimensions: 'سرير 120سم - دولاب 160سم',",
+  "          images: ['https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=600']",
+  "        },",
+  "        {",
+  "          title: 'صالون قصر النبلاء المذهب',",
+  "          description: 'صالون كلاسيكي فخم مذهب بأيدي أمهر الصناع بدمياط، وحياكة فاخرة تليق بقاعات استقبال الضيوف.',",
+  "          price: 38000,",
+  "          discountPrice: 28500,",
+  "          category: 'انتريه',",
+  "          woodType: 'زان روماني مذهب',",
+  "          dimensions: 'كنبة 3 مقاعد، كنبة مقعدين، و2 فوتيه مع طاولة مذهبة',",
+  "          images: ['https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=600']",
+  "        },",
+  "        {",
+  "          title: 'سفرة فرساي الملكية مع 8 كراسي',",
+  "          description: 'طاولة سفرة فخمة مع 8 كراسي مبطنة بنسيج قطني فاخر، تتميز بزجاج حراري مقاوم للصدمات.',",
+  "          price: 32000,",
+  "          discountPrice: 24000,",
+  "          category: 'سفرة',",
+  "          woodType: 'زان أحمر طبيعي متين',",
+  "          dimensions: 'طول 220سم - عرض 110سم',",
+  "          images: ['https://images.unsplash.com/photo-1577140917170-285929fb55b7?q=80&w=600']",
+  "        }",
+  "      ];",
+  "      await Product.insertMany(sampleData);",
+  "      console.log('[Auto-Seeder] تم تعبئة المعرض بـ 4 منتجات تجريبية فاخرة بنجاح!');",
+  "    }",
+  "  } catch (err) {",
+  "    console.error('[Seeder Error] فشل التغذية التلقائية: ' + err.message);",
+  "  }",
+  "};",
+  "",
+  "seedSampleProducts();",
+  "",
+  "const PORT = process.env.PORT || 5000;",
+  "const server = app.listen(PORT, () => {",
+  "  console.log('--------------------------------------------------');",
+  "  console.log('Server is running on port: ' + PORT);",
+  "  console.log('Visit: http://localhost:5000 in your browser!');",
+  "  console.log('--------------------------------------------------');",
+  "});",
+  "",
+  "// تصدير الخادم السحابي لمنصة Vercel لمنع أخطاء البناء",
+  "module.exports = app;"
+].join('\n');
+
+// ملف تشغيل السيرفر start_server.cmd بضغطة زر لويندوز
+files['start_server.cmd'] = [
+  "@echo off",
+  "title Al-Najjar Showroom Web Server",
+  "echo ===========================================================",
+  "echo   Al-Najjar Showroom Web Server Startup Tool (Windows)      ",
+  "echo ===========================================================",
+  "echo.",
+  "echo 1. Installing required node packages... Please wait.",
+  "call npm install",
+  "echo.",
+  "echo 2. Launching Backend Web Server in Development Mode...",
+  "echo.",
+  "call npm run dev",
+  "pause"
+].join('\n');
+
+// ملف التعليمات للمستخدم العادي وغير التقني README_USER.txt (محدث بالأرقام الجديدة)
+files['README_USER.txt'] = [
+  "========================================================================",
+  "    دليل تشغيل موقع معرض النجار للأثاث الراقي (للمستخدم العادي)",
+  "========================================================================",
+  "",
+  "أهلاً بك! هذا الملف مخصص لمساعدتك في تشغيل موقع المعرض على جهازك خطوة بخطوة وبكل سهولة دون الحاجة لخبرة برمجية.",
+  "",
+  "------------------------------------------------------------------------",
+  "أولاً: المتطلبات الأساسية للتشغيل (تقوم بتثبيتها مرة واحدة فقط):",
+  "------------------------------------------------------------------------",
+  "1. برنامج Node.js (المحرك المشغل للموقع):",
+  "   - قم بتحميله وتثبيته مباشرة عبر الضغط على هذا الرابط وتثبيته بالخيارات الافتراضية:",
+  "   👉 الرابط: https://nodejs.org/dist/v20.18.0/node-v20.18.0-x64.msi",
+  "",
+  "2. قاعدة بيانات MongoDB (الإصدار المستقر 7.0 الموصى به):",
+  "   - قم بتحميله وتثبيته لكي يقوم بحفظ المنتجات وطلبات الزبائن:",
+  "   👉 الرابط: https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.12-signed.msi",
+  "   - أثناء التثبيت، اضغط التالي (Next) في كل الخطوات حتى النهاية للتثبيت التلقائي كخدمة نظام تعمل لوحدها.",
+  "",
+  "------------------------------------------------------------------------",
+  "ثانياً: طريقة تشغيل الموقع ودخوله بضغطة زر:",
+  "------------------------------------------------------------------------",
+  "1. اذهب لمجلد المشروع (al-najjar-showroom).",
+  "2. اضغط مرتين متتاليتين (Double Click) على الملف المسمى: [ start_server.cmd ].",
+  "3. ستظهر لك شاشة سوداء تقوم بتحميل وتثبيت الملفات اللازمة تلقائياً.",
+  "4. انتظر ثوانٍ حتى ترى جملة النجاح بالإنجليزية:",
+  "   [ Visit: http://localhost:5000 in your browser! ]",
+  "",
+  "5. الآن، افتح متصفح الإنترنت العادي بجهازك (مثل جوجل كروم أو إيدج) واكتب في الأعلى الرابط التالي ثم اضغط دخول:",
+  "   👉 الرابط: http://localhost:5000",
+  "",
+  "6. حساب المدير الرئيسي الافتراضي للدخول للوحة الإدارة:",
+  "   - البريد الإلكتروني: admin@najjar.com",
+  "   - كلمة المرور: admin_najjar_123",
+  "   - أرقام التواصل بالمعرض: 01060344580 - 01003989727",
+  "",
+  "مبروك! الموقع الآن يعمل بكامل تفاصيله وجماله الفاخر أمامك محلياً على جهازك ويقوم بحفظ الطلبات وتصفح الأقسام والقطع الراقية بنجاح تام.",
+  "========================================================================"
+].join('\n');
+
+// ملف تكوين الاستثناءات السحابية .gitignore لعدم رفع الحزم الثقيلة
+files['.gitignore'] = [
+  "node_modules/",
+  ".env",
+  "public/uploads/*",
+  "!public/uploads/.gitkeep"
+].join('\n');
+
+
+// دالة معالجة التوليد التلقائي لملفات الموقع المتكامل
+function buildProject() {
+  console.log('--- Rebuilding Al-Najjar Web-Only Project ---');
+
+  directories.forEach(dir => {
+    const dirPath = path.join(__dirname, dir);
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+      console.log('[+] Created Directory: ' + dir);
+    }
+  });
+
+  Object.entries(files).forEach(([filePath, content]) => {
+    const fullPath = path.join(__dirname, filePath);
+    fs.writeFileSync(fullPath, content, 'utf8');
+    console.log('[+] Created File: ' + filePath);
+  });
+
+  console.log('\n--- Web Project Rebuilt Successfully! ---');
+  console.log('Ready to run out-of-the-box.');
+}
+
+buildProject();

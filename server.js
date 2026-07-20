@@ -67,7 +67,7 @@ app.get('/api/custom-orders', async (req, res) => {
   }
 });
 
-// تحديث تفاصيل طلب العمولة
+// تحديث تفاصيل طلب العمولة (المالية، نسبة الإنجاز والمواعيد)
 app.put('/api/custom-orders/:id', async (req, res) => {
   try {
     const updatedOrder = await CustomOrder.findByIdAndUpdate(
@@ -123,6 +123,7 @@ const seedSampleProducts = async () => {
       });
       console.log('[Auto-Seeder] تم إنشاء حساب المدير الرئيسي الافتراضي بنجاح!');
     } else {
+      // إعادة تعيين كلمة المرور الافتراضية لضمان الدخول في حال تداخل البيانات القديمة
       adminUser.password = 'admin_najjar_123';
       await adminUser.save();
       console.log('[Auto-Seeder] تم التحقق من حساب المدير وإعادة تعيين الباسوورد الافتراضي بنجاح!');
@@ -184,9 +185,12 @@ const seedSampleProducts = async () => {
 seedSampleProducts();
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log('--------------------------------------------------');
   console.log('Server is running on port: ' + PORT);
   console.log('Visit: http://localhost:5000 in your browser!');
   console.log('--------------------------------------------------');
 });
+
+// تصدير الخادم السحابي لمنصة Vercel لمنع أخطاء البناء
+module.exports = app;
