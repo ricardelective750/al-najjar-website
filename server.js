@@ -16,7 +16,7 @@ connectDB();
 const app = express();
 app.use(express.json());
 
-// تشغيل وخدمة واجهة الويب الأمامية والمرفوعات مباشرة
+// تشغيل وخدمة واجهة الويب الأمامية والمرفوعات مباشرة بالمسار المطلق المتوافق مع Vercel
 app.use(express.static(path.join(__dirname, 'public')));
 
 // إعداد خزان رفع الصور والفيديوهات من الجهاز المحلي (Multer)
@@ -67,7 +67,7 @@ app.get('/api/custom-orders', async (req, res) => {
   }
 });
 
-// تحديث تفاصيل طلب العمولة (المالية، نسبة الإنجاز والمواعيد)
+// تحديث تفاصيل طلب العمولة
 app.put('/api/custom-orders/:id', async (req, res) => {
   try {
     const updatedOrder = await CustomOrder.findByIdAndUpdate(
