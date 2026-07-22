@@ -289,106 +289,6 @@
     </div>
   </section>
 
-  <!-- نافذة تحديث تفاصيل طلب العمولة -->
-  <div id="order-update-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex justify-center items-center p-4">
-    <div class="bg-[#1C1C1C] text-white p-8 rounded-lg max-w-lg w-full border border-luxuryGold/30 relative">
-      <button onclick="closeOrderUpdateModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl">&times;</button>
-      <h4 class="text-xl font-bold text-luxuryGold text-center mb-6">تحديث تفاصيل تصنيع العمولة والحساب المالي</h4>
-      <input type="hidden" id="updateOrderId">
-      <div class="space-y-4 text-right">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs text-gray-400 mb-2">سعر التكلفة / الجملة (ج.م)</label>
-            <input type="number" id="updateCost" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-          </div>
-          <div>
-            <label class="block text-xs text-gray-400 mb-2">سعر البيع للعميل (ج.م)</label>
-            <input type="number" id="updateSelling" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-          </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs text-gray-400 mb-2">المبلغ المدفوع (العربون) (ج.م)</label>
-            <input type="number" id="updatePaid" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-          </div>
-          <div>
-            <label class="block text-xs text-gray-400 mb-2">موعد التسليم المتوقع</label>
-            <input type="text" id="updateDelivery" placeholder="مثال: 2024/11/01" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-          </div>
-        </div>
-        <div>
-          <label class="block text-xs text-gray-400 mb-2">نسبة الإنجاز والتنفيذ في الورشة</label>
-          <select id="updateCompletion" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-            <option value="0">0% - قيد الانتظار</option>
-            <option value="10">10% - تصميم وتخطيط</option>
-            <option value="25">25% - تقطيع وتأسيس الخشب</option>
-            <option value="50">50% - التجميع الأولي الهيكل</option>
-            <option value="75">75% - مرحلة القشرة والتشطيب</option>
-            <option value="100">100% - جاهز للتسليم النهائي</option>
-          </select>
-        </div>
-        <div class="flex gap-4 pt-2">
-          <button onclick="saveOrderUpdate()" class="w-2/3 bg-luxuryGold text-black font-bold py-3 rounded hover:bg-yellow-500 transition-all duration-300">حفظ وتعديل التغييرات</button>
-          <button onclick="deleteOrder()" class="w-1/3 bg-red-600/20 text-red-500 border border-red-600/40 font-bold py-3 rounded hover:bg-red-600 hover:text-white transition-all duration-300">حذف الطلب</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- نافذة إضافة طلب عمولة يدوي جديد من الإدمن (Manual Order Modal) -->
-  <div id="manual-order-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex justify-center items-center p-4">
-    <div class="bg-[#1C1C1C] text-white p-8 rounded-lg max-w-2xl w-full border border-luxuryGold/30 relative max-h-[90vh] overflow-y-auto">
-          <button onclick="closeManualOrderModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl">&times;</button>
-          <h4 class="text-xl font-bold text-luxuryGold text-center mb-6">تسجيل وإضافة طلب عمولة يدوي جديد</h4>
-          <form id="manual-order-form" onsubmit="submitManualOrder(event)" class="space-y-4 text-right">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium mb-2 text-gray-300">اسم العميل</label>
-                <input type="text" id="mCustName" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-              </div>
-              <div>
-                <label class="block text-sm font-medium mb-2 text-gray-300">رقم هاتف العميل</label>
-                <input type="tel" id="mCustPhone" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs text-gray-400 mb-2">نوع الأثاث المطلوب</label>
-                <input type="text" id="mTitle" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-              </div>
-              <div>
-                <label class="block text-xs text-gray-400 mb-2">نوع الخشب المتفق عليه</label>
-                <input type="text" id="mWood" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-              </div>
-              <div>
-                <label class="block text-xs text-gray-400 mb-2">تاريخ التسليم المتوقع</label>
-                <input type="text" id="mDelivery" placeholder="مثال: 2024/11/01" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs text-gray-400 mb-2">تكلفة الجملة / التكلفة (ج.م)</label>
-                <input type="number" id="mCostPrice" value="0" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-              </div>
-              <div>
-                <label class="block text-xs text-gray-400 mb-2">سعر البيع المتفق عليه (ج.م)</label>
-                <input type="number" id="mSellingPrice" value="0" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-              </div>
-              <div>
-                <label class="block text-xs text-gray-400 mb-2">المقدم / العربون المدفوع (ج.م)</label>
-                <input type="number" id="mAmountPaid" value="0" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-              </div>
-            </div>
-            <div>
-              <label class="block text-xs text-gray-400 mb-2">تفاصيل الطلب، الألوان، والمقاسات بالكامل</label>
-              <textarea id="mDetails" rows="3" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold"></textarea>
-            </div>
-            <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded hover:bg-green-500 transition-all duration-300">حفظ وإدراج الطلب مباشرة بقائمة العمولة</button>
-          </form>
-        </div>
-      </div>
-  </div>
-
   <!-- فوتر بسيط للوحة التحكم -->
   <footer class="bg-black text-gray-600 py-6 text-center text-xs border-t border-white/5 mt-12 w-full">
     <div>جميع الحقوق محفوظة © معرض النجار للأثاث الراقي</div>
@@ -396,7 +296,6 @@
   </footer>
 
   <script>
-    // حفظ جلسة الدخول تلقائياً لراحة الموظفين
     window.onload = function() {
       const cachedUser = sessionStorage.getItem('adminUser');
       if (cachedUser) {
@@ -405,7 +304,6 @@
       }
     };
 
-    // التحقق من الحساب لفتح لوحة التحكم
     async function verifyAdmin() {
       const email = document.getElementById('adminEmailInput').value;
       const password = document.getElementById('adminPasswordInput').value;
@@ -429,7 +327,6 @@
       }
     }
 
-    // إظهار لوحة التحكم وتخصيصها حسب الصلاحية
     function showDashboard(user) {
       document.getElementById('admin-login-box').classList.add('hidden');
       document.getElementById('admin-panel').classList.remove('hidden');
@@ -455,7 +352,6 @@
       alert('تم تسجيل الخروج وإغلاق لوحة التحكم بنجاح.');
     }
 
-    // تشفير الصور وتحويلها لـ Base64 لتعمل سحابياً
     async function handleLocalUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -472,7 +368,6 @@
       reader.readAsDataURL(file);
     }
 
-    // تبويبات لوحة التحكم
     function switchAdminTab(tabId) {
       document.getElementById('tab-product').classList.add('hidden');
       document.getElementById('tab-orders').classList.add('hidden');
@@ -488,7 +383,6 @@
       document.getElementById('btn-' + tabId).className = 'text-luxuryGold font-bold px-4 py-1 border-b-2 border-luxuryGold';
     }
 
-    // إضافة منتج جديد
     async function addNewProduct(event) {
       event.preventDefault();
       const payload = {
@@ -520,26 +414,27 @@
       }
     }
 
-    // جلب المنتجات للحذف
+    // جلب المنتجات للحذف باستخدام الدمج المعياري السليم لحل أخطاء الصياغة
     async function loadAdminProducts() {
       try {
-        const response = await fetch('/api/products');
-        const json = await response.json();
-        const tbody = document.getElementById('manage-products-tbody');
+        var response = await fetch('/api/products');
+        var json = await response.json();
+        var tbody = document.getElementById('manage-products-tbody');
         tbody.innerHTML = '';
         if (!json.success || json.data.length === 0) {
           tbody.innerHTML = '<tr><td colspan="4" class="text-center p-3 text-gray-500">لا توجد منتجات بالمعرض حالياً.</td></tr>';
           return;
         }
-        json.data.forEach(prod => {
-          const tr = document.createElement('tr');
+        json.data.forEach(function(prod) {
+          var tr = document.createElement('tr');
           tr.className = 'border-b border-white/5 hover:bg-white/5 text-right';
-          tr.innerHTML = `
-            <td class="p-2.5 font-bold">place-holder</td>`
-          `;
-          // سيتم تعبئتها ديناميكياً بأمان لمنع أي أخطاء
-          tr.cells[0].innerText = prod.title;
-          tr.insertAdjacentHTML('beforeend', '<td class="p-2.5 text-luxuryGold">' + prod.category + '</td><td class="p-2.5">' + prod.price + ' ج.م</td><td class="p-2.5"><button onclick="deleteProduct(\'' + prod._id + '\')" class="bg-red-600/20 text-red-500 border border-red-600/40 px-3 py-1 rounded text-xs hover:bg-red-600 hover:text-white transition">حذف القطعة</button></td>');
+          
+          var prodHTML = '<td class="p-2.5 font-bold">' + prod.title + '</td>';
+          prodHTML += '<td class="p-2.5 text-luxuryGold">' + prod.category + '</td>';
+          prodHTML += '<td class="p-2.5">' + prod.price + ' ج.م</td>';
+          prodHTML += '<td class="p-2.5"><button onclick="deleteProduct(\'' + prod._id + '\')" class="bg-red-600/20 text-red-500 border border-red-600/40 px-3 py-1 rounded text-xs hover:bg-red-600 hover:text-white transition">حذف القطعة</button></td>';
+          
+          tr.innerHTML = prodHTML;
           tbody.appendChild(tr);
         });
       } catch (err) {
@@ -547,7 +442,6 @@
       }
     }
 
-    // حذف منتج
     async function deleteProduct(id) {
       if (!confirm('هل أنت متأكد تماماً من حذف وإزالة هذه القطعة نهائياً من المعرض؟')) return;
       try {
@@ -564,39 +458,38 @@
       }
     }
 
-    // جلب طلبات الورشة والعمولة
+    // جلب طلبات الورشة والعمولة باستخدام الدمج المعياري السليم لحل أخطاء الصياغة
     async function loadCustomOrders() {
       try {
-        const response = await fetch('/api/custom-orders');
-        const json = await response.json();
-        const tbody = document.getElementById('orders-table-body');
+        var response = await fetch('/api/custom-orders');
+        var json = await response.json();
+        var tbody = document.getElementById('orders-table-body');
         tbody.innerHTML = '';
         if (!json.success || json.data.length === 0) {
           tbody.innerHTML = '<tr><td colspan="9" class="text-center p-4 text-gray-500">لا توجد طلبات عمولة مسجلة بعد.</td></tr>';
           return;
         }
-        json.data.forEach(order => {
-          const remaining = order.sellingPrice - order.amountPaid;
-          const tr = document.createElement('tr');
+        json.data.forEach(function(order) {
+          var remaining = order.sellingPrice - order.amountPaid;
+          var tr = document.createElement('tr');
           tr.className = 'border-b border-white/5 hover:bg-white/5 text-right';
-          tr.innerHTML = `
-            <td class="p-3"><strong>${order.customerName}</strong><br><span class="text-xs text-gray-500">${order.customerPhone}</span></td>
-            <td class="p-3"><strong>${order.title}</strong><br><span class="text-xs text-gray-400">${order.details}</span></td>
-            <td class="p-3 text-red-400">${order.costPrice} ج.م</td>
-            <td class="p-3 text-green-400 font-bold">${order.sellingPrice} ج.م</td>
-            <td class="p-3 text-blue-400">${order.amountPaid} ج.م</td>
-            <td class="p-3 text-yellow-500 font-bold">${remaining} ج.م</td>
-            <td class="p-3 text-gray-300">${order.deliveryDate || 'غير محدد'}</td>
-            <td class="p-3">
-              <div class="w-full bg-gray-700 rounded-full h-2">
-                <div class="bg-luxuryGold h-2 rounded-full" style="width: ${order.completionPercentage}%"></div>
-              </div>
-              <span class="text-xs text-luxuryGold font-bold">${order.completionPercentage}%</span>
-            </td>
-            <td class="p-3">
-              <button onclick="openOrderUpdateModal('${order._id}', ${order.costPrice}, ${order.sellingPrice}, ${order.amountPaid}, '${order.deliveryDate}', ${order.completionPercentage})" class="bg-luxuryGold text-black px-3 py-1 rounded text-xs font-bold hover:bg-yellow-500 transition-all duration-300">إدارة الحساب</button>
-            </td>
-          `;
+          
+          var orderHTML = '<td class="p-3"><strong>' + order.customerName + '</strong><br><span class="text-xs text-gray-500">' + order.customerPhone + '</span></td>';
+          orderHTML += '<td class="p-3"><strong>' + order.title + '</strong><br><span class="text-xs text-gray-400">' + order.details + '</span></td>';
+          orderHTML += '<td class="p-3 text-red-400">' + order.costPrice + ' ج.م</td>';
+          orderHTML += '<td class="p-3 text-green-400 font-bold">' + order.sellingPrice + ' ج.م</td>';
+          orderHTML += '<td class="p-3 text-blue-400">' + order.amountPaid + ' ج.م</td>';
+          orderHTML += '<td class="p-3 text-yellow-500 font-bold">' + remaining + ' ج.م</td>';
+          orderHTML += '<td class="p-3 text-gray-300">' + (order.deliveryDate || 'غير محدد') + '</td>';
+          orderHTML += '<td class="p-3">';
+          orderHTML += '  <div class="w-full bg-gray-700 rounded-full h-2">';
+          orderHTML += '    <div class="bg-luxuryGold h-2 rounded-full" style="width: ' + order.completionPercentage + '%"></div>';
+          orderHTML += '  </div>';
+          orderHTML += '  <span class="text-xs text-luxuryGold font-bold">' + order.completionPercentage + '%</span>';
+          orderHTML += '</td>';
+          orderHTML += '<td class="p-3"><button onclick="openOrderUpdateModal(\'' + order._id + '\', ' + order.costPrice + ', ' + order.sellingPrice + ', ' + order.amountPaid + ', \'' + (order.deliveryDate || '') + '\', ' + order.completionPercentage + ')" class="bg-luxuryGold text-black px-3 py-1 rounded text-xs font-bold hover:bg-yellow-500 transition-all duration-300">إدارة الحساب</button></td>';
+          
+          tr.innerHTML = orderHTML;
           tbody.appendChild(tr);
         });
       } catch (err) {
@@ -604,19 +497,6 @@
       }
     }
 
-    // المقايسات والورشة والعمولة تحديث وحذف
-    function openOrderUpdateModal(id, cost, selling, paid, date, completion) {
-      document.getElementById('updateOrderId').value = id;
-      document.getElementById('updateCost').value = cost;
-      document.getElementById('updateSelling').value = selling;
-      document.getElementById('updatePaid').value = paid;
-      document.getElementById('updateDelivery').value = date;
-      document.getElementById('updateCompletion').value = completion;
-      document.getElementById('order-update-modal').classList.remove('hidden');
-    }
-    function closeOrderUpdateModal() {
-      document.getElementById('order-update-modal').classList.add('hidden');
-    }
     async function saveOrderUpdate() {
       const id = document.getElementById('updateOrderId').value;
       const payload = {
@@ -662,7 +542,6 @@
       }
     }
 
-    // إضافة حسابات موظفين جديدة
     async function addNewUser(event) {
       event.preventDefault();
       const payload = {
@@ -691,29 +570,34 @@
       }
     }
 
-    // جلب قائمة حسابات الموظفين للحذف (خاص للآدمن فقط)
+    // جلب الموظفين للإدارة والحذف المباشر (Admin Only)
     async function loadAdminUsers() {
       try {
-        const response = await fetch('/api/users');
-        const json = await response.json();
-        const tbody = document.getElementById('manage-users-tbody');
+        var response = await fetch('/api/users');
+        var json = await response.json();
+        var tbody = document.getElementById('manage-users-tbody');
         tbody.innerHTML = '';
         if (!json.success || json.data.length === 0) {
           tbody.innerHTML = '<tr><td colspan="4" class="text-center p-3 text-gray-500">لا توجد حسابات مسجلة بعد.</td></tr>';
           return;
         }
-        json.data.forEach(user => {
-          const isMainAdmin = user.email === 'admin@najjar.com';
-          const tr = document.createElement('tr');
+        json.data.forEach(function(user) {
+          var isMainAdmin = user.email === 'admin@najjar.com';
+          var tr = document.createElement('tr');
           tr.className = 'border-b border-white/5 hover:bg-white/5 text-right';
-          tr.innerHTML = `
-            <td class="p-2.5 font-bold">${user.name}</td>
-            <td class="p-2.5 text-gray-400">${user.email}</td>
-            <td class="p-2.5 text-luxuryGold font-semibold">${user.role === 'admin' ? 'مدير عام' : 'موظف مبيعات'}</td>
-            <td class="p-2.5">
-              ${isMainAdmin ? '<span class="text-gray-600 text-xs">حساب النظام المحمي</span>' : `<button onclick="deleteUser('${user._id}')" class="bg-red-600/20 text-red-500 border border-red-600/40 px-3 py-1 rounded text-xs hover:bg-red-600 hover:text-white transition">إلغاء الصلاحية</button>`}
-            </td>
-          `;
+          
+          var userHTML = '<td class="p-2.5 font-bold">' + user.name + '</td>';
+          userHTML += '<td class="p-2.5 text-gray-400">' + user.email + '</td>';
+          userHTML += '<td class="p-2.5 text-luxuryGold font-semibold">' + (user.role === 'admin' ? 'مدير عام' : 'موظف مبيعات') + '</td>';
+          userHTML += '<td class="p-2.5">';
+          if (isMainAdmin) {
+            userHTML += '  <span class="text-gray-600 text-xs">حساب النظام المحمي</span>';
+          } else {
+            userHTML += '  <button onclick="deleteUser(\'' + user._id + '\')" class="bg-red-600/20 text-red-500 border border-red-600/40 px-3 py-1 rounded text-xs hover:bg-red-600 hover:text-white transition">إلغاء الصلاحية</button>';
+          }
+          userHTML += '</td>';
+          
+          tr.innerHTML = userHTML;
           tbody.appendChild(tr);
         });
       } catch (err) {
@@ -721,7 +605,6 @@
       }
     }
 
-    // حذف وإلغاء صلاحية حساب موظف
     async function deleteUser(id) {
       if (!confirm('هل أنت متأكد تماماً من سحب الصلاحيات وإلغاء حساب هذا الموظف نهائياً من نظام المعرض؟')) return;
       try {
@@ -738,47 +621,6 @@
       }
     }
 
-    // إضافة طلب عمولة يدوي
-    function openManualOrderModal() {
-      document.getElementById('manual-order-modal').classList.remove('hidden');
-    }
-    function closeManualOrderModal() {
-      document.getElementById('manual-order-modal').classList.add('hidden');
-      document.getElementById('manual-order-form').reset();
-    }
-    async function submitManualOrder(event) {
-      event.preventDefault();
-      const payload = {
-        customerName: document.getElementById('mCustName').value,
-        customerPhone: document.getElementById('mCustPhone').value,
-        title: document.getElementById('mTitle').value,
-        woodTypeRequested: document.getElementById('mWood').value,
-        deliveryDate: document.getElementById('mDelivery').value,
-        details: document.getElementById('mDetails').value,
-        costPrice: Number(document.getElementById('mCostPrice').value),
-        sellingPrice: Number(document.getElementById('mSellingPrice').value),
-        amountPaid: Number(document.getElementById('mAmountPaid').value)
-      };
-      try {
-        const response = await fetch('/api/products/custom-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const resJson = await response.json();
-        if (resJson.success) {
-          alert('تم إضافة طلب العمولة اليدوي بنجاح وإدراجه في قائمة حسابات الورشة!');
-          closeManualOrderModal();
-          loadCustomOrders(); 
-        } else {
-          alert('فشل إضافة الطلب: ' + (resJson.message || resJson.error));
-        }
-      } catch (err) {
-        alert('حدث خطأ في الاتصال بالخادم أثناء تسجيل الطلب اليدوي.');
-      }
-    }
-
-    // وظيفة تصدير الداتا إلى شيت إكسيل (CSV مرمز للعربية UTF-8 BOM)
     async function exportToExcel() {
       try {
         const response = await fetch('/api/custom-orders');
@@ -820,7 +662,45 @@
       }
     }
 
-    // مولّد بوستات فيسبوك التسويقية التلقائية بنقرة واحدة
+    function openManualOrderModal() {
+      document.getElementById('manual-order-modal').classList.remove('hidden');
+    }
+    function closeManualOrderModal() {
+      document.getElementById('manual-order-modal').classList.add('hidden');
+      document.getElementById('manual-order-form').reset();
+    }
+    async function submitManualOrder(event) {
+      event.preventDefault();
+      const payload = {
+        customerName: document.getElementById('mCustName').value,
+        customerPhone: document.getElementById('mCustPhone').value,
+        title: document.getElementById('mTitle').value,
+        woodTypeRequested: document.getElementById('mWood').value,
+        deliveryDate: document.getElementById('mDelivery').value,
+        details: document.getElementById('mDetails').value,
+        costPrice: Number(document.getElementById('mCostPrice').value),
+        sellingPrice: Number(document.getElementById('mSellingPrice').value),
+        amountPaid: Number(document.getElementById('mAmountPaid').value)
+      };
+      try {
+        const response = await fetch('/api/products/custom-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const resJson = await response.json();
+        if (resJson.success) {
+          alert('تم إضافة طلب العمولة اليدوي بنجاح وإدراجه في قائمة حسابات الورشة!');
+          closeManualOrderModal();
+          loadCustomOrders(); 
+        } else {
+          alert('فشل إضافة الطلب: ' + (resJson.message || resJson.error));
+        }
+      } catch (err) {
+        alert('حدث خطأ في الاتصال بالخادم أثناء تسجيل الطلب اليدوي.');
+      }
+    }
+
     function toggleFbProductName() {
       const type = document.getElementById('fbCampaignType').value;
       const container = document.getElementById('fbProdNameContainer');

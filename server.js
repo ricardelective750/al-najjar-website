@@ -161,6 +161,7 @@ const seedSampleProducts = async () => {
       });
       console.log('[Auto-Seeder] تم إنشاء حساب المدير الرئيسي الافتراضي بنجاح!');
     } else {
+      // إعادة تعيين كلمة المرور الافتراضية لضمان الدخول في حال تداخل البيانات القديمة
       adminUser.password = 'admin_najjar_123';
       await adminUser.save();
       console.log('[Auto-Seeder] تم التحقق من حساب المدير وإعادة تعيين الباسوورد الافتراضي بنجاح!');
