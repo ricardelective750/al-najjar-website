@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const Product = require('../models/Product');
 
-// دالة التغذية التلقائية للبيانات مدمجة هنا لضمان عدم تشغيلها إلا بعد نجاح الاتصال التام
 const seedSampleProducts = async () => {
   try {
     const adminEmail = 'admin@najjar.com';
@@ -31,7 +30,6 @@ const seedSampleProducts = async () => {
           price: 45000,
           discountPrice: 33750,
           category: 'غرف نوم',
-          woodType: 'خشب زان أحمر فرنسي',
           dimensions: 'سرير 180سم - دولاب 280سم',
           images: ['https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=600']
         },
@@ -41,7 +39,6 @@ const seedSampleProducts = async () => {
           price: 22000,
           discountPrice: 16500,
           category: 'غرف أطفال',
-          woodType: 'خشب سويدي متين كبس',
           dimensions: 'سرير 120سم - دولاب 160سم',
           images: ['https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=600']
         },
@@ -51,7 +48,6 @@ const seedSampleProducts = async () => {
           price: 38000,
           discountPrice: 28500,
           category: 'انتريه',
-          woodType: 'زان روماني مذهب',
           dimensions: 'كنبة 3 مقاعد، كنبة مقعدين، و2 فوتيه مع طاولة مذهبة',
           images: ['https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=600']
         },
@@ -61,7 +57,6 @@ const seedSampleProducts = async () => {
           price: 32000,
           discountPrice: 24000,
           category: 'سفرة',
-          woodType: 'زان أحمر طبيعي متين',
           dimensions: 'طول 220سم - عرض 110سم',
           images: ['https://images.unsplash.com/photo-1577140917170-285929fb55b7?q=80&w=600']
         }
@@ -75,27 +70,20 @@ const seedSampleProducts = async () => {
 };
 
 const connectDB = async () => {
-  // 1. التحقق من وجود اتصال نشط ومستقر بالفعل لتجنب التكرار والتعليق
   if (mongoose.connection.readyState === 1) {
     console.log('Database already connected (State: 1)');
     return;
   }
-  
-  // 2. إذا كان جاري الاتصال حالياً، ننتظر ولا نفتح اتصال جديد
   if (mongoose.connection.readyState === 2) {
     console.log('Database is connecting (State: 2)... Waiting.');
     return;
   }
-
-  // 3. فتح اتصال جديد ونظيف بالكامل بقاعدة البيانات السحابية
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
     });
     console.log('Database connected successfully: ' + conn.connection.host);
-    
-    // تشغيل مغذي البيانات وتحديث حساب المدير فور نجاح الاتصال الحقيقي
     await seedSampleProducts();
   } catch (error) {
     console.error('Database connection failed: ' + error.message);

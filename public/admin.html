@@ -75,7 +75,7 @@
         <button onclick="logoutAdmin()" class="bg-red-600/20 text-red-500 border border-red-600/40 px-4 py-1.5 rounded text-xs hover:bg-red-600 hover:text-white transition-all duration-300">تسجيل الخروج</button>
       </div>
 
-      <!-- التبويبات الداخلية للوحة التحكم -->
+      <!-- التبويبات الداخلية للوحة التحكم بعد إضافة ميزة حظر المستخدمين للموظف العادي -->
       <div class="flex border-b border-white/10 gap-4 pb-3 text-sm">
         <button onclick="switchAdminTab('tab-product')" class="text-luxuryGold font-bold px-4 py-1 border-b-2 border-luxuryGold" id="btn-tab-product">إضافة منتجات وصور</button>
         <button onclick="switchAdminTab('tab-orders')" class="text-gray-400 px-4 py-1 hover:text-white" id="btn-tab-orders">متابعة حسابات الورشة والعمولة</button>
@@ -116,18 +116,14 @@
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs text-gray-400 mb-2">نوع الخشب المستخدم (مثال: زان أحمر فرنسي)</label>
-              <input type="text" id="prodWood" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-            </div>
-            <div>
               <label class="block text-xs text-gray-400 mb-2">أبعاد القطعة ومقاساتها (مثال: سرير 180سم - دولاب 280سم)</label>
               <input type="text" id="prodDimensions" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
             </div>
-          </div>
-          <div>
-            <label class="block text-xs text-gray-400 mb-2">رفع صورة أو فيديو القطعة (يمكنك اختيار عدة صور معاً للرفع الفوري!)</label>
-            <input type="file" id="prodFile" multiple onchange="handleMultipleLocalUpload(event)" class="w-full bg-black/40 border border-white/10 rounded px-4 py-1.5 text-white focus:outline-none focus:border-luxuryGold">
-            <input type="hidden" id="prodImage" value="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=600">
+            <div>
+              <label class="block text-xs text-gray-400 mb-2">رفع صورة أو فيديو القطعة (يمكنك اختيار عدة صور معاً للرفع الفوري!)</label>
+              <input type="file" id="prodFile" multiple onchange="handleMultipleLocalUpload(event)" class="w-full bg-black/40 border border-white/10 rounded px-4 py-1.5 text-white focus:outline-none focus:border-luxuryGold">
+              <input type="hidden" id="prodImage" value="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=600">
+            </div>
           </div>
           <div>
             <label class="block text-xs text-gray-400 mb-2">وصف المنتج وتفاصيل التصميم والتشطيب</label>
@@ -196,7 +192,7 @@
         <div class="space-y-4 max-w-2xl">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs text-gray-400 mb-2">نوع المنشور التسويقي (حملة الدعاية)</label>
+              <label class="block text-xs text-gray-400 mb-2">نوع المنشور التسويقي (ححملة الدعاية)</label>
               <select id="fbCampaignType" onchange="toggleFbProductName()" class="w-full bg-black/40 border border-white/10 rounded px-4 py-3 text-white focus:outline-none focus:border-luxuryGold">
                 <option value="general">حملة إعلانية عامة للمعرض والخصومات</option>
                 <option value="custom">حملة دعاية لخدمة التصنيع المخصص (عمولة/ورشة)</option>
@@ -298,11 +294,11 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs text-gray-400 mb-2">سعر التكلفة / الجملة (ج.م)</label>
-            <input type="number" id="updateCost" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+            <input type="number" id="updateCost" class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
           </div>
           <div>
             <label class="block text-xs text-gray-400 mb-2">سعر البيع للعميل (ج.م)</label>
-            <input type="number" id="updateSelling" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+            <input type="number" id="updateSelling" class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
           </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -429,10 +425,11 @@
       }
     }
 
+    // فك الحظر وتقييد الصلاحيات التلقائي للوحة الموظف والآدمن
     function showDashboard(user) {
       document.getElementById('admin-login-box').classList.add('hidden');
       document.getElementById('admin-panel').classList.remove('hidden');
-      document.getElementById('logged-admin-name').innerText = user.name + ' (' + (user.role === 'admin' ? 'مدير عام' : 'موظف مبيعات') + ')';
+      document.getElementById('logged-admin-name').innerText = user.name + ' (' + (user.role === 'admin' ? 'مدير عام' : 'موظف مبيعات / متابعة') + ')';
       
       if (user.role === 'admin') {
         document.getElementById('btn-tab-users').classList.remove('hidden');
@@ -454,42 +451,56 @@
       alert('تم تسجيل الخروج وإغلاق لوحة التحكم بنجاح.');
     }
 
-    // محرك ضغط الصور الذكي لرفع أي حجم ملف تلقائياً وبأعلى سرعة وسلاسة
-    async function handleLocalUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    // محرك ضغط الصور المبتكر والذكي لمنع كبر الحجم وتعليق السيرفر السحابي نهائياً
+    async function handleMultipleLocalUpload(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
       
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function(event) {
-        const img = new Image();
-        img.src = event.target.result;
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          let width = img.width;
-          let height = img.height;
-          const max_size = 1200;
-          if (width > height) {
-            if (width > max_size) {
-              height *= max_size / width;
-              width = max_size;
+      var uploadedImagesBase64 = [];
+      
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const base64 = await compressImageFile(file);
+        uploadedImagesBase64.push(base64);
+      }
+      
+      document.getElementById('prodImage').value = JSON.stringify(uploadedImagesBase64);
+      alert('تم رفع وضغط عدد ' + uploadedImagesBase64.length + ' صور بنجاح وتجهيزها للحفظ السحابي التلقائي!');
+    }
+
+    function compressImageFile(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+          const img = new Image();
+          img.src = event.target.result;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            const max_size = 1200;
+            
+            if (width > height) {
+              if (width > max_size) {
+                height *= max_size / width;
+                width = max_size;
+              }
+            } else {
+              if (height > max_size) {
+                width *= max_size / height;
+                height = max_size;
+              }
             }
-          } else {
-            if (height > max_size) {
-              width *= max_size / height;
-              height = max_size;
-            }
-          }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
-          
-          document.getElementById('prodImage').value = compressedBase64;
-          alert('تم رفع الصورة وضغطها بنجاح وهي جاهزة للنشر السحابي الفوري!');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+            resolve(compressedBase64);
+          };
         };
-      };
+      });
     }
 
     function switchAdminTab(tabId) {
@@ -509,16 +520,25 @@
 
     async function addNewProduct(event) {
       event.preventDefault();
+      
+      var rawImagesValue = document.getElementById('prodImage').value;
+      var imagesArray = [];
+      
+      try {
+        imagesArray = JSON.parse(rawImagesValue);
+      } catch(e) {
+        imagesArray = [rawImagesValue];
+      }
+      
       const payload = {
         title: document.getElementById('prodTitle').value,
         category: document.getElementById('prodCategory').value,
         price: Number(document.getElementById('prodPrice').value),
         discountPrice: Number(document.getElementById('prodDiscount').value),
-        woodType: document.getElementById('prodWood').value,
-        dimensions: document.getElementById('prodDimensions').value,
-        images: [document.getElementById('prodImage').value],
+        images: imagesArray,
         description: document.getElementById('prodDescription').value
       };
+      
       try {
         const response = await fetch('/api/products', {
           method: 'POST',
@@ -538,7 +558,7 @@
       }
     }
 
-    // جلب المنتجات للحذف باستخدام الدمج المعياري السليم لحل أخطاء الصياغة
+    // جلب المنتجات للحذف الإداري الآمن والسريع
     async function loadAdminProducts() {
       try {
         var response = await fetch('/api/products');
@@ -582,7 +602,7 @@
       }
     }
 
-    // جلب طلبات الورشة والعمولة الآمن لحل تعليق الأزرار للعملاء
+    // جلب طلبات الورشة والعمولة الآمن لمنع تعطل زر إدارة الحساب نهائياً
     async function loadCustomOrders() {
       try {
         var response = await fetch('/api/custom-orders');
@@ -624,7 +644,7 @@
       }
     }
 
-    // فتح التحديث من الذاكرة العامة مباشرة للوقاية من عطل الأزرار
+    // فتح التحديث من الذاكرة العامة لمنع تعطل زر إدارة الحساب نهائياً
     function openOrderUpdateModal(id) {
       const order = fetchedOrders.find(o => o._id === id);
       if (!order) return;
@@ -846,6 +866,7 @@
       }
     }
 
+    // إظهار وإخفاء حقل اسم المنتج في مولد البوستات التسويقية
     function toggleFbProductName() {
       const type = document.getElementById('fbCampaignType').value;
       const container = document.getElementById('fbProdNameContainer');
