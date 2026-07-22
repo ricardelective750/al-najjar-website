@@ -75,7 +75,7 @@
         <button onclick="logoutAdmin()" class="bg-red-600/20 text-red-500 border border-red-600/40 px-4 py-1.5 rounded text-xs hover:bg-red-600 hover:text-white transition-all duration-300">تسجيل الخروج</button>
       </div>
 
-      <!-- التبويبات الداخلية للوحة التحكم بعد إضافة ميزة حظر المستخدمين للموظف العادي -->
+      <!-- التبويبات الداخلية للوحة التحكم -->
       <div class="flex border-b border-white/10 gap-4 pb-3 text-sm">
         <button onclick="switchAdminTab('tab-product')" class="text-luxuryGold font-bold px-4 py-1 border-b-2 border-luxuryGold" id="btn-tab-product">إضافة منتجات وصور</button>
         <button onclick="switchAdminTab('tab-orders')" class="text-gray-400 px-4 py-1 hover:text-white" id="btn-tab-orders">متابعة حسابات الورشة والعمولة</button>
@@ -308,7 +308,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs text-gray-400 mb-2">المبلغ المدفوع (العربون) (ج.م)</label>
-            <input type="number" id="updatePaid" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+            <input type="number" id="updatePaid" class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
           </div>
           <div>
             <label class="block text-xs text-gray-400 mb-2">موعد التسليم المتوقع</label>
@@ -317,7 +317,7 @@
         </div>
         <div>
           <label class="block text-xs text-gray-400 mb-2">نسبة الإنجاز والتنفيذ في الورشة</label>
-          <select id="updateCompletion" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+          <select id="updateCompletion" class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
             <option value="0">0% - قيد الانتظار</option>
             <option value="10">10% - تصميم وتخطيط</option>
             <option value="25">25% - تقطيع وتأسيس الخشب</option>
@@ -342,45 +342,45 @@
           <form id="manual-order-form" onsubmit="submitManualOrder(event)" class="space-y-4 text-right">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium mb-2 text-gray-300">اسم العميل</label>
-                <input type="text" id="mCustName" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+                <label class="block text-sm font-medium mb-2 text-gray-300">اسم العميل بالكامل</label>
+                <input type="text" id="mCustName" required class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
               </div>
               <div>
                 <label class="block text-sm font-medium mb-2 text-gray-300">رقم هاتف العميل</label>
-                <input type="tel" id="mCustPhone" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+                <input type="tel" id="mCustPhone" required class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label class="block text-xs text-gray-400 mb-2">نوع الأثاث المطلوب</label>
-                <input type="text" id="mTitle" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+                <input type="text" id="mTitle" required class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
               </div>
               <div>
                 <label class="block text-xs text-gray-400 mb-2">نوع الخشب المتفق عليه</label>
-                <input type="text" id="mWood" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+                <input type="text" id="mWood" required class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
               </div>
               <div>
                 <label class="block text-xs text-gray-400 mb-2">تاريخ التسليم المتوقع</label>
-                <input type="text" id="mDelivery" placeholder="مثال: 2024/11/01" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+                <input type="text" id="mDelivery" placeholder="مثال: 2026/11/01" class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label class="block text-xs text-gray-400 mb-2">تكلفة الجملة / التكلفة (ج.م)</label>
-                <input type="number" id="mCostPrice" value="0" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+                <input type="number" id="mCostPrice" value="0" class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
               </div>
               <div>
                 <label class="block text-xs text-gray-400 mb-2">سعر البيع المتفق عليه (ج.م)</label>
-                <input type="number" id="mSellingPrice" value="0" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+                <input type="number" id="mSellingPrice" value="0" class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
               </div>
               <div>
                 <label class="block text-xs text-gray-400 mb-2">المقدم / العربون المدفوع (ج.م)</label>
-                <input type="number" id="mAmountPaid" value="0" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+                <input type="number" id="mAmountPaid" value="0" class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
               </div>
             </div>
             <div>
-              <label class="block text-xs text-gray-400 mb-2">تفاصيل الطلب، الألوان، والمقاسات بالكامل</label>
-              <textarea id="mDetails" rows="3" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold"></textarea>
+              <label class="block text-xs text-gray-400 mb-2">تفاصيل الطلب، الألوان، والمقاسات بالكامل واللوكيشن المفضل</label>
+              <textarea id="mDetails" rows="3" required class="w-full bg-[#1A1A1A] border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold"></textarea>
             </div>
             <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded hover:bg-green-500 transition-all duration-300">حفظ وإدراج الطلب مباشرة بقائمة العمولة</button>
           </form>
@@ -538,6 +538,7 @@
       }
     }
 
+    // جلب المنتجات للحذف باستخدام الدمج المعياري السليم لحل أخطاء الصياغة
     async function loadAdminProducts() {
       try {
         var response = await fetch('/api/products');
@@ -581,6 +582,7 @@
       }
     }
 
+    // جلب طلبات الورشة والعمولة الآمن لحل تعليق الأزرار للعملاء
     async function loadCustomOrders() {
       try {
         var response = await fetch('/api/custom-orders');
@@ -605,7 +607,7 @@
           orderHTML += '<td class="p-3 text-green-400 font-bold">' + order.sellingPrice + ' ج.م</td>';
           orderHTML += '<td class="p-3 text-blue-400">' + order.amountPaid + ' ج.م</td>';
           orderHTML += '<td class="p-3 text-yellow-500 font-bold">' + remaining + ' ج.م</td>';
-          orderHTML += '<td class="p-3 text-gray-300">' + (order.deliveryDate || 'غير محدد') + '</td>';';
+          orderHTML += '<td class="p-3 text-gray-300">' + (order.deliveryDate || 'غير محدد') + '</td>';
           orderHTML += '<td class="p-3">';
           orderHTML += '  <div class="w-full bg-gray-700 rounded-full h-2">';
           orderHTML += '    <div class="bg-luxuryGold h-2 rounded-full" style="width: ' + order.completionPercentage + '%"></div>';
@@ -622,6 +624,7 @@
       }
     }
 
+    // فتح التحديث من الذاكرة العامة مباشرة للوقاية من عطل الأزرار
     function openOrderUpdateModal(id) {
       const order = fetchedOrders.find(o => o._id === id);
       if (!order) return;
@@ -711,6 +714,7 @@
       }
     }
 
+    // جلب قائمة حسابات الموظفين للحذف (خاص للآدمن فقط) لحل عطل إدارة الحسابات
     async function loadAdminUsers() {
       try {
         var response = await fetch('/api/users');
@@ -728,7 +732,7 @@
           
           var userHTML = '<td class="p-2.5 font-bold">' + user.name + '</td>';
           userHTML += '<td class="p-2.5 text-gray-400">' + user.email + '</td>';
-          userHTML += '<td class="p-2.5 text-luxuryGold font-semibold">' + (user.role === 'admin' ? 'مدير عام' : 'موظف مبيعات') + '</td>';
+          userHTML += '<td class="p-2.5 text-luxuryGold font-semibold">' + (user.role === 'admin' ? 'مدير عام المعرض' : 'موظف مبيعات / متابعة') + '</td>';
           userHTML += '<td class="p-2.5">';
           if (isMainAdmin) {
             userHTML += '  <span class="text-gray-600 text-xs">حساب النظام المحمي</span>';
@@ -802,6 +806,7 @@
       }
     }
 
+    // فتح وإغلاق نافذة إضافة طلب عمولة يدوي وحل المشكلة تماماً للأجهزة المحمولة وويندوز
     function openManualOrderModal() {
       document.getElementById('manual-order-modal').classList.remove('hidden');
     }
@@ -830,7 +835,7 @@
         });
         const resJson = await response.json();
         if (resJson.success) {
-          alert('تم إضافة طلب العمولة اليدوي بنجاح وإدراجه في قائمة حسابات الورشة!');
+          alert('تم إضافة طلب العمولة اليدوي بنجاح وإدراجه في قائمة حسابات الورشة والمبيعات السحابية!');
           closeManualOrderModal();
           loadCustomOrders(); 
         } else {
