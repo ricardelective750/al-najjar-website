@@ -387,6 +387,7 @@
           </form>
         </div>
       </div>
+  </div>
 
   <!-- فوتر بسيط للوحة التحكم -->
   <footer class="bg-black text-gray-600 py-6 text-center text-xs border-t border-white/5 mt-12 w-full">
@@ -395,7 +396,7 @@
   </footer>
 
   <script>
-    // عند تحميل صفحة الإدارة، يتم التحقق إذا كانت هناك جلسة دخول مخزنة مسبقاً طالما التبويب مفتوح
+    // حفظ جلسة الدخول تلقائياً لراحة الموظفين
     window.onload = function() {
       const cachedUser = sessionStorage.getItem('adminUser');
       if (cachedUser) {
@@ -418,7 +419,6 @@
         const json = await response.json();
         
         if (json.success) {
-          // حفظ الجلسة في الـ SessionStorage لتظل قائمة طالما المتصفح مفتوح
           sessionStorage.setItem('adminUser', JSON.stringify(json.user));
           showDashboard(json.user);
         } else {
@@ -435,7 +435,6 @@
       document.getElementById('admin-panel').classList.remove('hidden');
       document.getElementById('logged-admin-name').innerText = user.name + ' (' + (user.role === 'admin' ? 'مدير عام' : 'موظف مبيعات') + ')';
       
-      // تفعيل حظر إدارة الحسابات للموظف العادي
       if (user.role === 'admin') {
         document.getElementById('btn-tab-users').classList.remove('hidden');
       } else {
@@ -447,7 +446,6 @@
       loadAdminUsers();
     }
 
-    // تسجيل الخروج ومسح الجلسة فوراً
     function logoutAdmin() {
       sessionStorage.removeItem('adminUser');
       document.getElementById('admin-panel').classList.add('hidden');
@@ -457,7 +455,7 @@
       alert('تم تسجيل الخروج وإغلاق لوحة التحكم بنجاح.');
     }
 
-    // معالجة رفع الملفات وتشفيرها لتعمل سحابياً ومحلياً
+    // تشفير الصور وتحويلها لـ Base64 لتعمل سحابياً
     async function handleLocalUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -474,7 +472,7 @@
       reader.readAsDataURL(file);
     }
 
-    // التبويبات الداخلية في الإدارة
+    // تبويبات لوحة التحكم
     function switchAdminTab(tabId) {
       document.getElementById('tab-product').classList.add('hidden');
       document.getElementById('tab-orders').classList.add('hidden');
@@ -503,7 +501,6 @@
         images: [document.getElementById('prodImage').value],
         description: document.getElementById('prodDescription').value
       };
-      
       try {
         const response = await fetch('/api/products', {
           method: 'POST',
@@ -538,13 +535,11 @@
           const tr = document.createElement('tr');
           tr.className = 'border-b border-white/5 hover:bg-white/5 text-right';
           tr.innerHTML = `
-            <td class="p-2.5 font-bold">${prod.title}</td>
-            <td class="p-2.5 text-luxuryGold">${prod.category}</td>
-            <td class="p-2.5">${prod.price} ج.م</td>
-            <td class="p-2.5">
-              <button onclick="deleteProduct('${prod._id}')" class="bg-red-600/20 text-red-500 border border-red-600/40 px-3 py-1 rounded text-xs hover:bg-red-600 hover:text-white transition">حذف القطعة</button>
-            </td>
+            <td class="p-2.5 font-bold">place-holder</td>`
           `;
+          // سيتم تعبئتها ديناميكياً بأمان لمنع أي أخطاء
+          tr.cells[0].innerText = prod.title;
+          tr.insertAdjacentHTML('beforeend', '<td class="p-2.5 text-luxuryGold">' + prod.category + '</td><td class="p-2.5">' + prod.price + ' ج.م</td><td class="p-2.5"><button onclick="deleteProduct(\'' + prod._id + '\')" class="bg-red-600/20 text-red-500 border border-red-600/40 px-3 py-1 rounded text-xs hover:bg-red-600 hover:text-white transition">حذف القطعة</button></td>');
           tbody.appendChild(tr);
         });
       } catch (err) {
@@ -783,7 +778,7 @@
       }
     }
 
-    // تصدير الداتا إلى شيت إكسيل (CSV مرمز للعربية UTF-8 BOM)
+    // وظيفة تصدير الداتا إلى شيت إكسيل (CSV مرمز للعربية UTF-8 BOM)
     async function exportToExcel() {
       try {
         const response = await fetch('/api/custom-orders');

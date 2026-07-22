@@ -39,9 +39,10 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
   return res.json({ success: true, url: '/uploads/' + req.file.filename });
 });
 
-// تسجيل الدخول للمدراء والموظفين ومطابقة كلمة المرور
+// تسجيل الدخول للمدراء والموظفين ومطابقة كلمة المرور مع إزالة حساسية الحروف الكبيرة والصغيرة ومسح المسافات
 app.post('/api/users/login', async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+  if (email) email = email.toLowerCase().trim();
   try {
     const user = await User.findOne({ email, password });
     if (!user) {
@@ -160,7 +161,6 @@ const seedSampleProducts = async () => {
       });
       console.log('[Auto-Seeder] تم إنشاء حساب المدير الرئيسي الافتراضي بنجاح!');
     } else {
-      // إعادة تعيين كلمة المرور الافتراضية لضمان الدخول في حال تداخل البيانات القديمة
       adminUser.password = 'admin_najjar_123';
       await adminUser.save();
       console.log('[Auto-Seeder] تم التحقق من حساب المدير وإعادة تعيين الباسوورد الافتراضي بنجاح!');

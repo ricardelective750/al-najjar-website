@@ -18,37 +18,61 @@
       }
     }
   </script>
+  <!-- تضمين خط Tajawal الفاخر والأوضح هندسياً -->
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Tajawal', sans-serif; background-color: #FAF9F6; -webkit-font-smoothing: antialiased; }
+    
+    /* تأثير اللوجو المجسم الفاخر ثلاثي الأبعاد بتأثير ذهبي معدني لامع ومستمر */
     @keyframes goldShimmer {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
     .text-3d-gold-shiny {
-      font-size: 1.8rem; font-weight: 800;
+      font-size: 1.8rem;
+      font-weight: 800;
       background: linear-gradient(to right, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
-      background-size: 200% auto; animation: goldShimmer 4s linear infinite;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+      animation: goldShimmer 4s linear infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.6));
-      text-shadow: 1px 1px 0px #8A6F27, 2px 2px 0px #70581E, 3px 3px 0px #574617;
+      text-shadow: 
+        1px 1px 0px #8A6F27,
+        2px 2px 0px #70581E,
+        3px 3px 0px #574617;
     }
-    @media (min-width: 768px) { .text-3d-gold-shiny { font-size: 2.8rem; } }
+    @media (min-width: 768px) {
+      .text-3d-gold-shiny { font-size: 2.8rem; }
+    }
   </style>
 </head>
 <body class="text-gray-800">
+
+  <!-- شريط الإعلانات العلوي المقسم مع أرقام التواصل وأيقونات السوشيال ميديا الفخمة المدمجة -->
   <div class="bg-luxuryGold text-black py-2.5 px-4 shadow-md border-b border-yellow-600/30">
     <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-center">
-      <div class="text-sm font-bold tracking-wide">✨ عرض خاص وحصري: خصم 25% وتوصيل مجاني لجميع الطلبات والمراكز بقنا لفترة محدودة! ✨</div>
+      <div class="text-sm font-bold tracking-wide">
+        ✨ عرض خاص وحصري: خصم 25% وتوصيل مجاني لجميع الطلبات والمراكز بقنا لفترة محدودة! ✨
+      </div>
+      <!-- أرقام الهواتف بجانب أيقونات التواصل المذهبة الفاخرة المدمجة للتشغيل المباشر -->
       <div class="flex items-center gap-3 text-xs font-bold">
         <span class="text-black/70 font-semibold">اتصل بنا:</span>
         <a href="tel:01060344580" class="hover:underline transition-all duration-300">01060344580</a>
         <span class="text-black/30">|</span>
         <a href="tel:01003989727" class="hover:underline transition-all duration-300">01003989727</a>
         <span class="text-black/30">|</span>
-        <a href="https://www.facebook.com/bdallhalnjar.469115?locale=ar_AR" target="_blank" class="bg-black/10 hover:bg-black/20 p-1.5 rounded-full transition-all duration-300 hover:scale-110"><svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg></a>
-        <a href="https://wa.me/201060344580" target="_blank" class="bg-black/10 hover:bg-black/20 p-1.5 rounded-full transition-all duration-300 hover:scale-110"><svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.05-.149-.669-1.612-.916-2.207-.242-.596-.487-.514-.67-.515-.173-.002-.371-.002-.57-.002-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.135-1.61a11.75 11.75 0 005.908 1.597h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg></a>
+        <a href="https://www.facebook.com/bdallhalnjar.469115?locale=ar_AR" target="_blank" class="bg-black/10 hover:bg-black/20 p-1.5 rounded-full transition-all duration-300 hover:scale-110" title="فيسبوك المعرض">
+          <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
+          </svg>
+        </a>
+        <a href="https://wa.me/201060344580" target="_blank" class="bg-black/10 hover:bg-black/20 p-1.5 rounded-full transition-all duration-300 hover:scale-110" title="واتساب المعرض">
+          <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.05-.149-.669-1.612-.916-2.207-.242-.596-.487-.514-.67-.515-.173-.002-.371-.002-.57-.002-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.135-1.61a11.75 11.75 0 005.908 1.597h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/>
+          </svg>
+        </a>
       </div>
     </div>
   </div>
@@ -62,7 +86,6 @@
         <a href="#products" class="hover:text-luxuryGold transition-all duration-300">معرض المنتجات</a>
         <a href="#custom" class="hover:text-luxuryGold transition-all duration-300">طلب تصنيع عمولة</a>
         <a href="#contact" class="hover:text-luxuryGold transition-all duration-300">تواصل معنا</a>
-        <!-- تحويل زر لوحة التحكم ليفتح صفحة مستقلة آمنة تماماً -->
         <a href="/admin.html" class="bg-luxuryGold/10 text-luxuryGold border border-luxuryGold/30 px-4 py-1.5 rounded hover:bg-luxuryGold hover:text-black transition-all duration-300 text-xs font-bold">لوحة التحكم</a>
       </nav>
     </div>
