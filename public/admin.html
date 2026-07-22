@@ -192,7 +192,7 @@
         <div class="space-y-4 max-w-2xl">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs text-gray-400 mb-2">نوع المنشور التسويقي (ححملة الدعاية)</label>
+              <label class="block text-xs text-gray-400 mb-2">نوع المنشور التسويقي (حملة الدعاية)</label>
               <select id="fbCampaignType" onchange="toggleFbProductName()" class="w-full bg-black/40 border border-white/10 rounded px-4 py-3 text-white focus:outline-none focus:border-luxuryGold">
                 <option value="general">حملة إعلانية عامة للمعرض والخصومات</option>
                 <option value="custom">حملة دعاية لخدمة التصنيع المخصص (عمولة/ورشة)</option>
@@ -425,7 +425,6 @@
       }
     }
 
-    // فك الحظر وتقييد الصلاحيات التلقائي للوحة الموظف والآدمن
     function showDashboard(user) {
       document.getElementById('admin-login-box').classList.add('hidden');
       document.getElementById('admin-panel').classList.remove('hidden');
@@ -558,7 +557,7 @@
       }
     }
 
-    // جلب المنتجات للحذف الإداري الآمن والسريع
+    // جلب المنتجات للحذف
     async function loadAdminProducts() {
       try {
         var response = await fetch('/api/products');
@@ -602,7 +601,7 @@
       }
     }
 
-    // جلب طلبات الورشة والعمولة الآمن لمنع تعطل زر إدارة الحساب نهائياً
+    // جلب طلبات الورشة والعمولة المطور
     async function loadCustomOrders() {
       try {
         var response = await fetch('/api/custom-orders');
@@ -644,7 +643,6 @@
       }
     }
 
-    // فتح التحديث من الذاكرة العامة لمنع تعطل زر إدارة الحساب نهائياً
     function openOrderUpdateModal(id) {
       const order = fetchedOrders.find(o => o._id === id);
       if (!order) return;
@@ -734,7 +732,6 @@
       }
     }
 
-    // جلب قائمة حسابات الموظفين للحذف (خاص للآدمن فقط) لحل عطل إدارة الحسابات
     async function loadAdminUsers() {
       try {
         var response = await fetch('/api/users');
@@ -794,7 +791,7 @@
           return;
         }
         let csvContent = '\ufeff';
-        csvContent += 'اسم العميل,رقم الهاتف,نوع الأثاث المطلوبة,التفاصيل والمقاسات,نوع الخشب,سعر التكلفة (جملة),سعر البيع النهائي,المبلغ المدفوع,المبلغ المتبقي,تاريخ التسليم,نسبة الإنجاز,حالة الطلب\n';
+        csvContent += 'اسم العميل,رقم الهاتف,نوع الأثاث المطلوبة,التفاصيل والمقاسات,التكلفة (جملة),سعر البيع النهائي,المبلغ المدفوع,المبلغ المتبقي,تاريخ التسليم,نسبة الإنجاز,حالة الطلب\n';
         json.data.forEach(function(order) {
           const remaining = order.sellingPrice - order.amountPaid;
           const row = [
@@ -802,7 +799,6 @@
             '"' + order.customerPhone + '"',
             '"' + order.title + '"',
             '"' + order.details.replace(/\\r?\\n|\\r/g, ' ') + '"',
-            '"' + order.woodTypeRequested + '"',
             order.costPrice,
             order.sellingPrice,
             order.amountPaid,
@@ -826,7 +822,6 @@
       }
     }
 
-    // فتح وإغلاق نافذة إضافة طلب عمولة يدوي وحل المشكلة تماماً للأجهزة المحمولة وويندوز
     function openManualOrderModal() {
       document.getElementById('manual-order-modal').classList.remove('hidden');
     }
@@ -840,7 +835,7 @@
         customerName: document.getElementById('mCustName').value,
         customerPhone: document.getElementById('mCustPhone').value,
         title: document.getElementById('mTitle').value,
-        woodTypeRequested: document.getElementById('mWood').value,
+        woodTypeRequested: 'طبيعي فاخر',
         deliveryDate: document.getElementById('mDelivery').value,
         details: document.getElementById('mDetails').value,
         costPrice: Number(document.getElementById('mCostPrice').value),
@@ -866,7 +861,6 @@
       }
     }
 
-    // إظهار وإخفاء حقل اسم المنتج في مولد البوستات التسويقية
     function toggleFbProductName() {
       const type = document.getElementById('fbCampaignType').value;
       const container = document.getElementById('fbProdNameContainer');

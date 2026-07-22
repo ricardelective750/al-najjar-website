@@ -14,14 +14,14 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// تشغيل وخدمة واجهة الويب الأمامية والمرفوعات مباشرة بالمسار المطلق المتوافق مع Vercel في أعلى الأنبوب السحابي
-app.use(express.static(path.join(__dirname, 'public')));
-
 // فحص وتأمين الاتصال بقاعدة البيانات قبل معالجة أي طلب لمسارات الـ API فقط (للحفاظ على سرعة تقديم الملفات الساكنة واستقرار الخادم)
 app.use('/api', async (req, res, next) => {
   await connectDB();
   next();
 });
+
+// خدمة واجهة الويب الأمامية والمرفوعات مباشرة بالمسار المطلق المتوافق مع Vercel
+app.use(express.static(path.join(__dirname, 'public')));
 
 // إعداد خزان رفع الصور والفيديوهات من الجهاز المحلي (Multer)
 const storage = multer.diskStorage({
@@ -165,7 +165,6 @@ const seedSampleProducts = async () => {
       });
       console.log('[Auto-Seeder] تم إنشاء حساب المدير الرئيسي الافتراضي بنجاح!');
     } else {
-      // إعادة تعيين كلمة المرور الافتراضية لضمان الدخول في حال تداخل البيانات القديمة
       adminUser.password = 'admin_najjar_123';
       await adminUser.save();
       console.log('[Auto-Seeder] تم التحقق من حساب المدير وإعادة تعيين الباسوورد الافتراضي بنجاح!');

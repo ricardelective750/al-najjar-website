@@ -7,7 +7,6 @@ const productSchema = new mongoose.Schema({
   discountPrice: { type: Number, default: 0 },
   images: [{ type: String, required: [true, 'يرجى إضافة صورة للمنتج'] }],
   category: { type: String, required: [true, 'يرجى اختيار القسم الرئيسي'] },
-  woodType: { type: String, required: [true, 'يرجى تحديد نوع الخشب'] },
   dimensions: { type: String, trim: true },
   isAvailable: { type: Boolean, default: true },
   stock: { type: Number, default: 1 }
