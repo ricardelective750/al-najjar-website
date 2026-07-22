@@ -39,12 +39,11 @@
 </head>
 <body class="text-gray-100 min-h-screen flex flex-col justify-between">
 
-  <!-- شريط علوي بسيط -->
   <div class="bg-luxuryGold text-black text-center py-2.5 px-4 text-xs font-bold shadow-md">
     🔐 بوابة الإدارة والتحكم الفنية والمؤمنة بالكامل - معرض النجار للأثاث الراقي
   </div>
 
-  <!-- أولاً: بوابة تسجيل الدخول الممركزة (تظهر كأول خطوة حماية) -->
+  <!-- أولاً: بوابة تسجيل الدخول الممركزة -->
   <div id="admin-login-box" class="container mx-auto max-w-md p-4 my-auto">
     <div class="bg-[#1C1C1C] text-white p-8 rounded-lg border border-luxuryGold/30 shadow-2xl space-y-6">
       <div class="text-center">
@@ -65,7 +64,7 @@
     </div>
   </div>
 
-  <!-- ثانياً: لوحة تحكم الإدارة الكاملة (مخفية افتراضياً وتظهر فقط بعد التحقق) -->
+  <!-- ثانياً: لوحة تحكم الإدارة الكاملة المحدثة -->
   <section id="admin-panel" class="container mx-auto max-w-6xl p-4 my-8 hidden flex-grow">
     <div class="bg-[#121212] text-white p-8 rounded-lg border border-luxuryGold/20 space-y-12 shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-4">
@@ -105,59 +104,59 @@
               </select>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs text-gray-400 mb-2">السعر الأصلي (بالجنيه المصري)</label>
+              <label class="block text-xs text-gray-400 mb-2">السعر الأصلي (ج.م)</label>
               <input type="number" id="prodPrice" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
             </div>
             <div>
               <label class="block text-xs text-gray-400 mb-2">سعر الخصم إن وجد (0 في حال عدم وجود خصم)</label>
               <input type="number" id="prodDiscount" value="0" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs text-gray-400 mb-2">نوع الخشب المستخدم (مثال: زان أحمر فرنسي)</label>
+              <input type="text" id="prodWood" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400 mb-2">أبعاد القطعة ومقاساتها (مثال: سرير 180سم - دولاب 280سم)</label>
+              <input type="text" id="prodDimensions" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+            </div>
           </div>
           <div>
-            <label class="block text-xs text-gray-400 mb-2">نوع الخشب المستخدم (مثال: زان أحمر فرنسي)</label>
-            <input type="text" id="prodWood" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-          </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs text-gray-400 mb-2">أبعاد القطعة ومقاساتها (مثال: سرير 180سم - دولاب 280سم)</label>
-            <input type="text" id="prodDimensions" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
-          </div>
-          <div>
-            <label class="block text-xs text-gray-400 mb-2">رفع صورة أو فيديو القطعة من جهازك المحلي</label>
-            <input type="file" id="prodFile" onchange="handleLocalUpload(event)" class="w-full bg-black/40 border border-white/10 rounded px-4 py-1.5 text-white focus:outline-none focus:border-luxuryGold">
+            <label class="block text-xs text-gray-400 mb-2">رفع صورة أو فيديو القطعة (يمكنك اختيار عدة صور معاً للرفع الفوري!)</label>
+            <input type="file" id="prodFile" multiple onchange="handleMultipleLocalUpload(event)" class="w-full bg-black/40 border border-white/10 rounded px-4 py-1.5 text-white focus:outline-none focus:border-luxuryGold">
             <input type="hidden" id="prodImage" value="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=600">
           </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-2">وصف المنتج وتفاصيل التصميم والتشطيب</label>
+            <textarea id="prodDescription" rows="3" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold"></textarea>
+          </div>
+          <div class="text-center pt-2">
+            <button type="submit" class="bg-luxuryGold text-black px-12 py-3 rounded font-bold hover:bg-yellow-500 transition-all duration-300 shadow-lg text-sm">حفظ ونشر القطعة بالمعرض</button>
+          </div>
+        </form>
+        
+        <!-- جدول حذف وإلغاء قطع المعرض الحالية -->
+        <div class="border-t border-white/10 pt-6 mt-8 space-y-4">
+          <h6 class="text-md font-bold text-gray-300">قائمة الأثاث المعروض حالياً في الموقع (للحذف والتعديل)</h6>
+          <div class="overflow-x-auto">
+            <table class="w-full text-right text-xs border-collapse border border-white/5">
+              <thead>
+                <tr class="bg-white/5 text-gray-300">
+                  <th class="p-2.5 border border-white/5">اسم القطعة</th>
+                  <th class="p-2.5 border border-white/5">القسم</th>
+                  <th class="p-2.5 border border-white/5">السعر</th>
+                  <th class="p-2.5 border border-white/5">إجراءات الحذف</th>
+                </tr>
+              </thead>
+              <tbody id="manage-products-tbody">
+                <!-- تعبأ ديناميكياً -->
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div>
-          <label class="block text-xs text-gray-400 mb-2">وصف المنتج وتفاصيل التصميم والتشطيب</label>
-          <textarea id="prodDescription" rows="3" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold"></textarea>
-        </div>
-        <div class="text-center pt-2">
-          <button type="submit" class="bg-luxuryGold text-black px-12 py-3 rounded font-bold hover:bg-yellow-500 transition-all duration-300 shadow-lg text-sm">حفظ ونشر القطعة بالمعرض</button>
-        </div>
-      </form>
-      
-      <!-- جدول حذف وإلغاء قطع المعرض الحالية -->
-      <div class="border-t border-white/10 pt-6 mt-8 space-y-4">
-        <h6 class="text-md font-bold text-gray-300">قائمة الأثاث المعروض حالياً في الموقع (للحذف والتعديل)</h6>
-        <div class="overflow-x-auto">
-          <table class="w-full text-right text-xs border-collapse border border-white/5">
-            <thead>
-              <tr class="bg-white/5 text-gray-300">
-                <th class="p-2.5 border border-white/5">اسم القطعة</th>
-                <th class="p-2.5 border border-white/5">القسم</th>
-                <th class="p-2.5 border border-white/5">السعر</th>
-                <th class="p-2.5 border border-white/5">إجراءات الحذف</th>
-              </tr>
-            </thead>
-            <tbody id="manage-products-tbody">
-              <!-- تعبأ ديناميكياً -->
-            </tbody>
-          </table>
-        </div>
-      </div>
       </div>
 
       <!-- تبويب 2: متابعة حسابات ومقايسات العمولة والورشة -->
@@ -190,7 +189,7 @@
         </div>
       </div>
 
-      <!-- تبويب 3: مولد بوستات فيسبوك الترويجي والتسويقي المطور كأداة تسويق متكاملة -->
+      <!-- تبويب 3: مولد بوستات فيسبوك التسويقية التلقائية -->
       <div id="tab-fb-writer" class="space-y-6 hidden text-right">
         <h5 class="text-lg font-bold text-gray-200">✍️ كاتب المحتوى التسويقي الذكي والمتكامل لفيسبوك</h5>
         <p class="text-xs text-gray-400">قم بتوليد منشور ترويجي متكامل وبنقرة واحدة لجذب العملاء وعرض مميزات المعرض والورشة.</p>
@@ -289,6 +288,106 @@
     </div>
   </section>
 
+  <!-- نافذة تحديث تفاصيل طلب العمولة -->
+  <div id="order-update-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex justify-center items-center p-4">
+    <div class="bg-[#1C1C1C] text-white p-8 rounded-lg max-w-lg w-full border border-luxuryGold/30 relative">
+      <button onclick="closeOrderUpdateModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl">&times;</button>
+      <h4 class="text-xl font-bold text-luxuryGold text-center mb-6">تحديث تفاصيل تصنيع العمولة والحساب المالي</h4>
+      <input type="hidden" id="updateOrderId">
+      <div class="space-y-4 text-right">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs text-gray-400 mb-2">سعر التكلفة / الجملة (ج.م)</label>
+            <input type="number" id="updateCost" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-2">سعر البيع للعميل (ج.م)</label>
+            <input type="number" id="updateSelling" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs text-gray-400 mb-2">المبلغ المدفوع (العربون) (ج.م)</label>
+            <input type="number" id="updatePaid" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-2">موعد التسليم المتوقع</label>
+            <input type="text" id="updateDelivery" placeholder="مثال: 2024/11/01" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 mb-2">نسبة الإنجاز والتنفيذ في الورشة</label>
+          <select id="updateCompletion" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+            <option value="0">0% - قيد الانتظار</option>
+            <option value="10">10% - تصميم وتخطيط</option>
+            <option value="25">25% - تقطيع وتأسيس الخشب</option>
+            <option value="50">50% - التجميع الأولي الهيكل</option>
+            <option value="75">75% - مرحلة القشرة والتشطيب</option>
+            <option value="100">100% - جاهز للتسليم النهائي</option>
+          </select>
+        </div>
+        <div class="flex gap-4 pt-2">
+          <button onclick="saveOrderUpdate()" class="w-2/3 bg-luxuryGold text-black font-bold py-3 rounded hover:bg-yellow-500 transition-all duration-300">حفظ وتعديل التغييرات</button>
+          <button onclick="deleteOrder()" class="w-1/3 bg-red-600/20 text-red-500 border border-red-600/40 font-bold py-3 rounded hover:bg-red-600 hover:text-white transition-all duration-300">حذف الطلب</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة إضافة طلب عمولة يدوي جديد من الإدمن (Manual Order Modal) -->
+  <div id="manual-order-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex justify-center items-center p-4">
+    <div class="bg-[#1C1C1C] text-white p-8 rounded-lg max-w-2xl w-full border border-luxuryGold/30 relative max-h-[90vh] overflow-y-auto">
+          <button onclick="closeManualOrderModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl">&times;</button>
+          <h4 class="text-xl font-bold text-luxuryGold text-center mb-6">تسجيل وإضافة طلب عمولة يدوي جديد</h4>
+          <form id="manual-order-form" onsubmit="submitManualOrder(event)" class="space-y-4 text-right">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-2 text-gray-300">اسم العميل</label>
+                <input type="text" id="mCustName" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2 text-gray-300">رقم هاتف العميل</label>
+                <input type="tel" id="mCustPhone" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs text-gray-400 mb-2">نوع الأثاث المطلوب</label>
+                <input type="text" id="mTitle" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+              </div>
+              <div>
+                <label class="block text-xs text-gray-400 mb-2">نوع الخشب المتفق عليه</label>
+                <input type="text" id="mWood" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+              </div>
+              <div>
+                <label class="block text-xs text-gray-400 mb-2">تاريخ التسليم المتوقع</label>
+                <input type="text" id="mDelivery" placeholder="مثال: 2024/11/01" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs text-gray-400 mb-2">تكلفة الجملة / التكلفة (ج.م)</label>
+                <input type="number" id="mCostPrice" value="0" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+              </div>
+              <div>
+                <label class="block text-xs text-gray-400 mb-2">سعر البيع المتفق عليه (ج.م)</label>
+                <input type="number" id="mSellingPrice" value="0" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+              </div>
+              <div>
+                <label class="block text-xs text-gray-400 mb-2">المقدم / العربون المدفوع (ج.م)</label>
+                <input type="number" id="mAmountPaid" value="0" class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400 mb-2">تفاصيل الطلب، الألوان، والمقاسات بالكامل</label>
+              <textarea id="mDetails" rows="3" required class="w-full bg-black/40 border border-white/10 rounded px-4 py-2 text-white focus:outline-none focus:border-luxuryGold"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded hover:bg-green-500 transition-all duration-300">حفظ وإدراج الطلب مباشرة بقائمة العمولة</button>
+          </form>
+        </div>
+      </div>
+  </div>
+
   <!-- فوتر بسيط للوحة التحكم -->
   <footer class="bg-black text-gray-600 py-6 text-center text-xs border-t border-white/5 mt-12 w-full">
     <div>جميع الحقوق محفوظة © معرض النجار للأثاث الراقي</div>
@@ -296,6 +395,9 @@
   </footer>
 
   <script>
+    // حفظ وجلب حجوزات ومقايسات الورشة محلياً وسحابياً دون أي أخطاء
+    var fetchedOrders = [];
+
     window.onload = function() {
       const cachedUser = sessionStorage.getItem('adminUser');
       if (cachedUser) {
@@ -352,20 +454,42 @@
       alert('تم تسجيل الخروج وإغلاق لوحة التحكم بنجاح.');
     }
 
+    // محرك ضغط الصور الذكي لرفع أي حجم ملف تلقائياً وبأعلى سرعة وسلاسة
     async function handleLocalUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
-      if (file.size > 2000000) { 
-        alert('حجم الصورة كبير جداً، يرجى اختيار صورة أقل من 2 ميجا بايت لسرعة التصفح السحابي.');
-        return;
-      }
+      
       const reader = new FileReader();
-      reader.onloadend = function() {
-        const base64String = reader.result;
-        document.getElementById('prodImage').value = base64String;
-        alert('ممتاز! تم تشفير الصورة السحابية بنجاح وهي جاهزة للحفظ المباشر في المعرض!');
-      };
       reader.readAsDataURL(file);
+      reader.onload = function(event) {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const max_size = 1200;
+          if (width > height) {
+            if (width > max_size) {
+              height *= max_size / width;
+              width = max_size;
+            }
+          } else {
+            if (height > max_size) {
+              width *= max_size / height;
+              height = max_size;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7); // ضغط جودة الصورة لـ 70%
+          
+          document.getElementById('prodImage').value = compressedBase64;
+          alert('تم رفع الصورة وضغطها بنجاح وهي جاهزة للنشر السحابي الفوري!');
+        };
+      };
     }
 
     function switchAdminTab(tabId) {
@@ -414,7 +538,6 @@
       }
     }
 
-    // جلب المنتجات للحذف باستخدام الدمج المعياري السليم لحل أخطاء الصياغة
     async function loadAdminProducts() {
       try {
         var response = await fetch('/api/products');
@@ -458,7 +581,7 @@
       }
     }
 
-    // جلب طلبات الورشة والعمولة باستخدام الدمج المعياري السليم لحل أخطاء الصياغة
+    // جلب طلبات الورشة والعمولة الآمن لحل تعليق الأزرار للعملاء
     async function loadCustomOrders() {
       try {
         var response = await fetch('/api/custom-orders');
@@ -469,14 +592,18 @@
           tbody.innerHTML = '<tr><td colspan="9" class="text-center p-4 text-gray-500">لا توجد طلبات عمولة مسجلة بعد.</td></tr>';
           return;
         }
+        
+        // حفظ الداتا في الذاكرة لتجنب أخطاء تداخل النصوص العربية في الـ HTML
+        fetchedOrders = json.data;
+        
         json.data.forEach(function(order) {
-          var remaining = order.sellingPrice - order.amountPaid;
-          var tr = document.createElement('tr');
+          const remaining = order.sellingPrice - order.amountPaid;
+          const tr = document.createElement('tr');
           tr.className = 'border-b border-white/5 hover:bg-white/5 text-right';
           
           var orderHTML = '<td class="p-3"><strong>' + order.customerName + '</strong><br><span class="text-xs text-gray-500">' + order.customerPhone + '</span></td>';
           orderHTML += '<td class="p-3"><strong>' + order.title + '</strong><br><span class="text-xs text-gray-400">' + order.details + '</span></td>';
-          orderHTML += '<td class="p-3 text-red-400">' + order.costPrice + ' ج.م</td>';
+          orderHTML += '<td class="p-3 text-red-400">' + order.costPrice + ' ج.م</td>';';
           orderHTML += '<td class="p-3 text-green-400 font-bold">' + order.sellingPrice + ' ج.م</td>';
           orderHTML += '<td class="p-3 text-blue-400">' + order.amountPaid + ' ج.م</td>';
           orderHTML += '<td class="p-3 text-yellow-500 font-bold">' + remaining + ' ج.م</td>';
@@ -487,7 +614,7 @@
           orderHTML += '  </div>';
           orderHTML += '  <span class="text-xs text-luxuryGold font-bold">' + order.completionPercentage + '%</span>';
           orderHTML += '</td>';
-          orderHTML += '<td class="p-3"><button onclick="openOrderUpdateModal(\'' + order._id + '\', ' + order.costPrice + ', ' + order.sellingPrice + ', ' + order.amountPaid + ', \'' + (order.deliveryDate || '') + '\', ' + order.completionPercentage + ')" class="bg-luxuryGold text-black px-3 py-1 rounded text-xs font-bold hover:bg-yellow-500 transition-all duration-300">إدارة الحساب</button></td>';
+          orderHTML += '<td class="p-3"><button onclick="openOrderUpdateModal(\'' + order._id + '\')" class="bg-luxuryGold text-black px-3 py-1 rounded text-xs font-bold hover:bg-yellow-500 transition-all duration-300">إدارة الحساب</button></td>';
           
           tr.innerHTML = orderHTML;
           tbody.appendChild(tr);
@@ -497,6 +624,23 @@
       }
     }
 
+    // فتح التحديث من الذاكرة العامة مباشرة للوقاية من عطل الأزرار
+    function openOrderUpdateModal(id) {
+      const order = fetchedOrders.find(o => o._id === id);
+      if (!order) return;
+      
+      document.getElementById('updateOrderId').value = id;
+      document.getElementById('updateCost').value = order.costPrice;
+      document.getElementById('updateSelling').value = order.sellingPrice;
+      document.getElementById('updatePaid').value = order.amountPaid;
+      document.getElementById('updateDelivery').value = order.deliveryDate || '';
+      document.getElementById('updateCompletion').value = order.completionPercentage;
+      document.getElementById('order-update-modal').classList.remove('hidden');
+    }
+
+    function closeOrderUpdateModal() {
+      document.getElementById('order-update-modal').classList.add('hidden');
+    }
     async function saveOrderUpdate() {
       const id = document.getElementById('updateOrderId').value;
       const payload = {
@@ -570,7 +714,6 @@
       }
     }
 
-    // جلب الموظفين للإدارة والحذف المباشر (Admin Only)
     async function loadAdminUsers() {
       try {
         var response = await fetch('/api/users');
@@ -582,8 +725,8 @@
           return;
         }
         json.data.forEach(function(user) {
-          var isMainAdmin = user.email === 'admin@najjar.com';
-          var tr = document.createElement('tr');
+          const isMainAdmin = user.email === 'admin@najjar.com';
+          const tr = document.createElement('tr');
           tr.className = 'border-b border-white/5 hover:bg-white/5 text-right';
           
           var userHTML = '<td class="p-2.5 font-bold">' + user.name + '</td>';
@@ -630,7 +773,7 @@
           return;
         }
         let csvContent = '\ufeff';
-        csvContent += 'اسم العميل,رقم الهاتف,نوع الأثاث المطلوبة,التفاصيل والمقاسات,نوع الخشب,سعر التكلفة (جملة),سعر البيع النهائي,المبلغ المدفوع,المبلغ المتبقي,تاريخ التسليم,نسبة الإنجاز,حالة الطلب\n';
+        csvContent += 'اسم العميل,رقم الهاتف,نوع الأثاث المطلوبة,التفاصيل والمقاسات,نوع الخشب,سعر التكلفة (جملة),سعر البيع النهائي,المبلغ المدفوع,المبلغ المتبقي,تاريخ التسليم,نسبة الإنجاز,الحالة\n';
         json.data.forEach(function(order) {
           const remaining = order.sellingPrice - order.amountPaid;
           const row = [
@@ -699,68 +842,6 @@
       } catch (err) {
         alert('حدث خطأ في الاتصال بالخادم أثناء تسجيل الطلب اليدوي.');
       }
-    }
-
-    function toggleFbProductName() {
-      const type = document.getElementById('fbCampaignType').value;
-      const container = document.getElementById('fbProdNameContainer');
-      if (type === 'product') {
-        container.classList.remove('hidden');
-        document.getElementById('fbProdName').setAttribute('required', 'true');
-      } else {
-        container.classList.add('hidden');
-        document.getElementById('fbProdName').removeAttribute('required');
-      }
-    }
-    function generateFacebookPost() {
-      const campaignType = document.getElementById('fbCampaignType').value;
-      const focusType = document.getElementById('fbFocusType').value;
-      const prodName = document.getElementById('fbProdName').value.trim();
-      
-      if (campaignType === 'product' && !prodName) {
-        alert('يرجى كتابة اسم قطعة الأثاث لتوليد المنشور التسويقي الخاص بها بنجاح.');
-        return;
-      }
-      
-      let postText = "✨ راحة بيتك تبدأ من عندنا! ✨\n\n";
-      if (campaignType === 'general') {
-        postText += "يسر 👑 معرض النجار للأثاث الراقي 👑 أن يقدم لكم أضخم تشكيلة من غرف النوم، الصالونات، الركنيات والمطابخ الفاخرة بقنا! 😍\n\n";
-        postText += "بنصنعلك الجودة والفخامة اللي هتعيش معاك العمر كله بأمهر أيدي فنية وخبرة سنين طويلة في تشطيب وتفصيل الموديلات العالمية! 🪵💎\n\n";
-      } else if (campaignType === 'custom') {
-        postText += "محتاج تفرش بيتك على مقاسك بالظبط وبتصميم خاص في خيالك؟ 🤔 الورش الخاصة بـ 👑 معرض النجار للأثاث الراقي 👑 في خدمتكم! 🔨✨\n\n";
-        postText += "بنقدم لكم خدمة (التصنيع المخصص عمولة) بالكامل! اختار الموديل والمقاس واللون اللي تحبه، وإحنا علينا التنفيذ بدقة متناهية وبأرقى الأخشاب والتشطيبات! 🪚🎨\n\n";
-      } else if (campaignType === 'product') {
-        postText += "يسر 👑 معرض النجار للأثاث الراقي 👑 أن يعلن لعشاق الفخامة عن توفر القطعة الأيقونية المميزة: " + prodName + "! 😍\n\n";
-        postText += "تصميم عصري فخم بخامات وتفاصيل هتبهر كل ضيوفك ومصنعة خصيصاً لتضفي لمسة من الأناقة لبيتك! 🪵💎\n\n";
-      } else if (campaignType === 'welcome') {
-        postText += "أهلاً بكم في صرح الفخامة والجمال! تفضلوا بزيارة فروع 👑 معرض النجار للأثاث الراقي 👑 وعاينوا الجودة والتشطيبات الفاخرة بأنفسكم! 🤝✨\n\n";
-        postText += "معرضنا مفتوح يومياً لخدمتكم، وجاهزين لمساعدتكم في اختيار وفرش شقتكم بالكامل بأرقى قطع الأثاث الكلاسيك والمودرن اللي تليق بذوقكم! 🛋️👑\n\n";
-      }
-      
-      if (focusType === 'all') {
-        postText += "🎁 عروضنا الحالية مستمرة: خصم خاص 25% وتوصيل مجاني وآمن لجميع الطلبات والمراكز بقنا لفترة محدودة جداً! 🚚✨\n\n";
-      } else if (focusType === 'wood') {
-        postText += "🪵 خاماتنا لا تقبل المنافسة: نعتمد بالكامل على أجود أنواع الخشب الطبيعي المجفف (الزان الأحمر الروماني والكبس السويد المتين) لضمان صلابة ومتانة تدوم لأجيال! 🌳🪚\n\n";
-      } else if (focusType === 'delivery') {
-        postText += "🚚 ميزة النقل الحصرية: بنشيل عنك هم النقل والتجميع! خدمة توصيل مجانية وآمنة وسريعة لجميع المراكز بمحافظة قنا والمحافظات المجاورة! 🏡📦\n\n";
-      }
-      
-      postText += "📍 تفضلوا بزيارتنا في صالة العرض: قنا - الخطارة - بجوار معرض الكويتي.\n\n";
-      postText += "📞 للاستفسار الهاتفي السريع والحجز المباشر:\n";
-      postText += "- 01060344580\n";
-      postText += "- 01003989727\n\n";
-      postText += "📲 أو راسلنا مباشرة عبر الواتساب بنقرة واحدة لطلب تفاصيل وعروض أسعار: https://wa.me/201060344580\n\n";
-      postText += "#معرض_النجار_للأثاث_الراقي #أثاث_فاخر #قنا #صناعة_عمولة #تجهيز_عرايس #صالونات_مودرن";
-      
-      document.getElementById('fbPostOutput').value = postText;
-      document.getElementById('generated-post-container').classList.remove('hidden');
-      document.getElementById('fbPostOutput').scrollIntoView({ behavior: 'smooth' });
-    }
-    function copyFbPost() {
-      const textarea = document.getElementById('fbPostOutput');
-      textarea.select();
-      document.execCommand('copy');
-      alert('تم نسخ المنشور التسويقي بنجاح! يمكنك الآن لصقه مباشرة في صفحة الفيسبوك الخاصة بالمعرض.');
     }
   </script>
 </body>
