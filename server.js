@@ -67,7 +67,7 @@ app.get('/api/custom-orders', async (req, res) => {
   }
 });
 
-// تحديث تفاصيل طلب العمولة
+// تحديث تفاصيل طلب العمولة (المالية، نسبة الإنجاز والمواعيد)
 app.put('/api/custom-orders/:id', async (req, res) => {
   try {
     const updatedOrder = await CustomOrder.findByIdAndUpdate(
@@ -89,6 +89,43 @@ app.delete('/api/custom-orders/:id', async (req, res) => {
       return res.status(404).json({ success: false, message: 'طلب العمولة غير موجود في النظام.' });
     }
     return res.status(200).json({ success: true, message: 'تم حذف طلب العمولة بنجاح.' });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// مسار إداري خاص لحذف قطع الأثاث من المعرض سحابياً
+app.delete('/api/products/:id', async (req, res) => {
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+    if (!deletedProduct) {
+      return res.status(404).json({ success: false, message: 'المنتج غير موجود.' });
+    }
+    return res.status(200).json({ success: true, message: 'تم إزالة المنتج بنجاح.' });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// جلب كافة الموظفين والمدراء (خاص بالآدمن فقط)
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find({}, '-password').sort({ createdAt: -1 });
+    return res.json({ success: true, data: users });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// سحب صلاحيات وحذف حساب موظف نهائياً (خاص بالآدمن فقط - حساب المدير محمي تلقائياً)
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (user && user.email === 'admin@najjar.com') {
+      return res.status(400).json({ success: false, message: 'لا يمكن حذف الحساب الإداري الرئيسي للمعرض لحماية النظام.' });
+    }
+    await User.findByIdAndDelete(req.params.id);
+    return res.json({ success: true, message: 'تم حذف الموظف بنجاح وسحب كافة الصلاحيات.' });
   } catch (error) {
     return res.status(500).json({ success: false, error: error.message });
   }
@@ -123,6 +160,7 @@ const seedSampleProducts = async () => {
       });
       console.log('[Auto-Seeder] تم إنشاء حساب المدير الرئيسي الافتراضي بنجاح!');
     } else {
+      // إعادة تعيين كلمة المرور الافتراضية لضمان الدخول في حال تداخل البيانات القديمة
       adminUser.password = 'admin_najjar_123';
       await adminUser.save();
       console.log('[Auto-Seeder] تم التحقق من حساب المدير وإعادة تعيين الباسوورد الافتراضي بنجاح!');
