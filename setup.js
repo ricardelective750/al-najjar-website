@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// المجلدات المطلوبة للموقع المتكامل
+// المجلدات المطلوب تأسيسها للموقع المتكامل
 const directories = [
   'config',
   'models',
@@ -99,7 +99,7 @@ files['config/db.js'] = [
   "          description: 'غرفة نوم أطفال مبهجة بتصميم عصري ملون، تشمل سريرين ودولاب مدمج بتفاصيل محببة ومقاومة لحركة الأطفال.',",
   "          price: 22000,",
   "          discountPrice: 16500,",
-  "          category: 'غرف أطفال',",
+          "          category: 'غرف أطفال',",
   "          dimensions: 'سرير 120سم - دولاب 160سم',",
   "          images: ['https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=600']",
   "        },",
@@ -167,7 +167,7 @@ const userSchema = new mongoose.Schema({
 
 module.exports = mongoose.model('User', userSchema);`;
 
-// نموذج المنتج المعدل بحذف حقل خشب الزان تماماً models/Product.js
+// نموذج المنتج models/Product.js
 files['models/Product.js'] = [
   "const mongoose = require('mongoose');",
   "",
@@ -583,7 +583,7 @@ files['public/index.html'] = [
   "</html>"
 ].join('\n');
 
-// 5. واجهة لوحة تحكم الإدارة المعزولة والمؤمنة بالكامل في ملف مستقل public/admin.html (محدثة وبأعلى دقة لتجنب أخطاء الصياغة والتعليق)
+// 5. واجهة لوحة تحكم الإدارة المعزولة والمؤمنة بالكامل في ملف مستقل public/admin.html (محدثة ومبنية بالدمج السليم بنسبة 100%)
 files['public/admin.html'] = [
   "<!DOCTYPE html>",
   "<html lang=\"ar\" dir=\"rtl\">",
@@ -796,7 +796,7 @@ files['public/admin.html'] = [
   "            <div>",
   "              <label class=\"block text-xs text-gray-400 mb-2\">التركيز التسويقي المفضل</label>",
   "              <select id=\"fbFocusType\" class=\"w-full bg-black/40 border border-white/10 rounded px-4 py-3 text-white focus:outline-none focus:border-luxuryGold\">",
-  "                <option value=\"all\">شامل كافة العروض والخصومات والتوصيل المجاني</option>",
+  "                <option value=\"all\">شمل كافة العروض والخصومات والتوصيل المجاني</option>",
   "                <option value=\"wood\">جودة الخشب الزان الأحمر الروماني والتشطيب الفاخر</option>",
   "                <option value=\"delivery\">ميزة التوصيل والتركيب المجاني الآمن لكافة المراكز</option>",
   "              </select>",
@@ -1012,6 +1012,7 @@ files['public/admin.html'] = [
   "      }",
   "    }",
   "",
+  "    // فك الحظر وتقييد الصلاحيات التلقائي للوحة الموظف والآدمن",
   "    function showDashboard(user) {",
   "      document.getElementById('admin-login-box').classList.add('hidden');",
   "      document.getElementById('admin-panel').classList.remove('hidden');",
@@ -1044,6 +1045,7 @@ files['public/admin.html'] = [
   "      ",
   "      var uploadedImagesBase64 = [];",
   "      ",
+  "      // معالجة وضغط كل الصور برمجياً داخل المتصفح قبل الرفع السحابي لتفادي الحجم الزائد",
   "      for (let i = 0; i < files.length; i++) {",
   "        const file = files[i];",
   "        const base64 = await compressImageFile(file);",
@@ -1065,7 +1067,7 @@ files['public/admin.html'] = [
   "            const canvas = document.createElement('canvas');",
   "            let width = img.width;",
   "            let height = img.height;",
-  "            const max_size = 1200;",
+  "            const max_size = 800; // تقليل الحجم لـ 800px لضغط فائق الخفة والسرعة",
   "            ",
   "            if (width > height) {",
   "              if (width > max_size) {",
@@ -1082,7 +1084,7 @@ files['public/admin.html'] = [
   "            canvas.height = height;",
   "            const ctx = canvas.getContext('2d');",
   "            ctx.drawImage(img, 0, 0, width, height);",
-  "            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);",
+  "            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.5); // ضغط الجودة لـ 50% لسرعة التصفح القصوى وخفة الداتا",
   "            resolve(compressedBase64);",
   "          };",
   "        };",
@@ -1188,7 +1190,7 @@ files['public/admin.html'] = [
   "      }",
   "    }",
   "",
-  "    // جلب طلبات الورشة والعمولة المطور",
+  "    // جلب طلبات الورشة والعمولة",
   "    async function loadCustomOrders() {",
   "      try {",
   "        var response = await fetch('/api/custom-orders');",
@@ -1378,7 +1380,7 @@ files['public/admin.html'] = [
   "          return;",
   "        }",
   "        let csvContent = '\\ufeff';",
-  "        csvContent += 'اسم العميل,رقم الهاتف,نوع الأثاث المطلوبة,التفاصيل والمقاسات,التكلفة (جملة),سعر البيع النهائي,المبلغ المدفوع,المبلغ المتبقي,تاريخ التسليم,نسبة الإنجاز,حالة الطلب\\n';",
+  "        csvContent += 'اسم العميل,رقم الهاتف,نوع الأثاث المطلوبة,التفاصيل والمقاسات,نوع الخشب,سعر التكلفة (جملة),سعر البيع النهائي,المبلغ المدفوع,المبلغ المتبقي,تاريخ التسليم,نسبة الإنجاز,حالة الطلب\\n';",
   "        json.data.forEach(function(order) {",
   "          const remaining = order.sellingPrice - order.amountPaid;",
   "          const row = [",
@@ -1386,6 +1388,7 @@ files['public/admin.html'] = [
   "            '\"' + order.customerPhone + '\"',",
   "            '\"' + order.title + '\"',",
   "            '\"' + order.details.replace(/\\\\r?\\\\n|\\\\r/g, ' ') + '\"',",
+  "            '\"' + order.woodTypeRequested + '\"',",
   "            order.costPrice,",
   "            order.sellingPrice,",
   "            order.amountPaid,",
@@ -1422,7 +1425,7 @@ files['public/admin.html'] = [
   "        customerName: document.getElementById('mCustName').value,",
   "        customerPhone: document.getElementById('mCustPhone').value,",
   "        title: document.getElementById('mTitle').value,",
-  "        woodTypeRequested: 'طبيعي فاخر',", // حقل داخلي افتراضي لحماية الحجز اليدوي
+  "        woodTypeRequested: 'طبيعي فاخر',",
   "        deliveryDate: document.getElementById('mDelivery').value,",
   "        details: document.getElementById('mDetails').value,",
   "        costPrice: Number(document.getElementById('mCostPrice').value),",
@@ -1514,7 +1517,7 @@ files['public/admin.html'] = [
   "</html>"
 ].join('\n');
 
-// ملف الخادم الرئيسي server.js المطور سحابياً والمراجع بالكامل
+// ملف الخادم الرئيسي server.js المطور بالكامل والمحمي بسعة 10MB وبفحص الاتصال لضمان الاستقرار
 files['server.js'] = [
   "const express = require('express');",
   "const dotenv = require('dotenv');",
@@ -1530,9 +1533,12 @@ files['server.js'] = [
   "dotenv.config();",
   "",
   "const app = express();",
-  "app.use(express.json());",
   "",
-  "// فحص وتأمين الاتصال بقاعدة البيانات قبل معالجة أي طلب لمسارات الـ API فقط (للحفاظ على سرعة تقديم الملفات الساكنة واستقرار الخادم)",
+  "// توسيع طاقة استيعاب السيرفر لـ 10 ميجا لرفع الصور المتعددة دون أي أخطاء (413 Payload Too Large)",
+  "app.use(express.json({ limit: '10mb' }));",
+  "app.use(express.urlencoded({ limit: '10mb', extended: true }));",
+  "",
+  "// فحص وتأمين الاتصال بقاعدة البيانات قبل معالجة أي طلب لمسارات الـ API فقط",
   "app.use('/api', async (req, res, next) => {",
   "  await connectDB();",
   "  next();",

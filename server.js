@@ -12,9 +12,12 @@ const User = require('./models/User');
 dotenv.config();
 
 const app = express();
-app.use(express.json());
 
-// فحص وتأمين الاتصال بقاعدة البيانات قبل معالجة أي طلب لمسارات الـ API فقط (للحفاظ على سرعة تقديم الملفات الساكنة واستقرار الخادم)
+// توسيع طاقة استيعاب السيرفر لـ 10 ميجا لرفع الصور المتعددة دون أي أخطاء (413 Payload Too Large)
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// فحص وتأمين الاتصال بقاعدة البيانات قبل معالجة أي طلب لمسارات الـ API فقط
 app.use('/api', async (req, res, next) => {
   await connectDB();
   next();
