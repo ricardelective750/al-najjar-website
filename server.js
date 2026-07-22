@@ -14,8 +14,8 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// فحص وتأمين الاتصال بقاعدة البيانات قبل معالجة أي طلب (للاستقرار السحابي التام ومنع تعليق Vercel)
-app.use(async (req, res, next) => {
+// فحص وتأمين الاتصال بقاعدة البيانات قبل معالجة أي طلب لمسارات الـ API فقط (للحفاظ على سرعة تقديم الملفات الساكنة واستقرار الخادم)
+app.use('/api', async (req, res, next) => {
   await connectDB();
   next();
 });
